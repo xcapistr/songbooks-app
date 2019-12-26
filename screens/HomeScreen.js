@@ -1,16 +1,22 @@
 import React from 'react'
-import { StyleSheet, View, Text } from 'react-native'
+import { StyleSheet, View, Text, Platform } from 'react-native'
+
+import Colors from '../constants/Colors'
 
 const HomeScreen = props => {
-  return(
+  return (
     <View style={styles.screen}>
-        <Text>This is Home screen</Text>
+      <Text>This is Home screen</Text>
     </View>
   )
 }
 
 HomeScreen.navigationOptions = {
-    headerTitle: 'Home'
+  headerTitle: 'Home',
+  headerStyle: {
+    backgroundColor: Platform.OS === 'android' ? Colors.primary : 'white'
+  },
+  headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary
 }
 
 const styles = StyleSheet.create({

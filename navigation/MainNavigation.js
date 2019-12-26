@@ -10,6 +10,7 @@ import BrowseScreen from '../screens/BrowseScreen'
 import HomeScreen from '../screens/HomeScreen'
 import SettingsScreen from '../screens/SettingsScreen'
 import SongDetailScreen from '../screens/SongDetailScreen'
+import Colors from '../constants/Colors'
 
 const browseStackNavigator = createStackNavigator({
   Browse: BrowseScreen,
@@ -62,8 +63,20 @@ const mainTabNavigatorConfig = {
 const mainTabNavigator =
   Platform.OS === 'android'
     ? createMaterialBottomTabNavigator(mainTabNavigatorConfig, {
-        shifting: true
+        shifting: true,
+        barStyle: {
+          backgroundColor: Colors.primary
+        },
+        activeColor: 'white',
+        inactiveColor: Colors.lighter
       })
-    : createBottomTabNavigator(mainTabNavigatorConfig)
+    : createBottomTabNavigator(mainTabNavigatorConfig, {
+        defaultNavigationOptions: {
+          tabBarOptions: {
+            activeTintColor: Colors.primary,
+            inactiveTintColor: Colors.lighter
+          }
+        }
+      })
 
 export default createAppContainer(mainTabNavigator)
