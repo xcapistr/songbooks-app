@@ -1,16 +1,28 @@
 import React from 'react'
 import {
   StyleSheet,
-  View
+  View,
+  TouchableOpacity,
+  TouchableNativeFeedback,
+  Platform
 } from 'react-native'
 
 import Colors from '../constants/Colors'
+// import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const Card = props => {
-  return (
-    <View style={{ ...styles.card, ...props.style }}>
-          {props.children}
+  return Platform.OS === 'android' ? (
+    <View style={{ ...styles.card, overflow: 'hidden' }}>
+      <TouchableNativeFeedback>
+        <View style={{ ...props.style, padding: 10 }}>{props.children}</View>
+      </TouchableNativeFeedback>
     </View>
+  ) : (
+    <TouchableOpacity>
+      <View style={{ ...styles.card, ...props.style, padding: 10 }}>
+        {props.children}
+      </View>
+    </TouchableOpacity>
   )
 }
 
@@ -24,7 +36,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginVertical: 6,
     marginHorizontal: 10,
-    padding: 10,
     backgroundColor: 'white'
   }
 })
