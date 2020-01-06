@@ -2,16 +2,15 @@ import React, { useState, useEffect } from 'react'
 import { StyleSheet, View, FlatList, Platform } from 'react-native'
 
 import Colors from '../constants/Colors'
-import BookCard from '../components/BookCard'
-import { GetBooks } from '../services/Db'
-import { reload } from 'expo/build/Updates/Updates'
+import SongCard from '../components/SongCard'
+import { GetSongs } from '../services/Db'
 
-const HomeScreen = props => {
+const BookDetailScreen = props => {
   const [data, setData] = useState([])
 
   const reload = async () => {
-    const books = await GetBooks()
-    setData(books)
+    const songs = await GetSongs()
+    setData(songs)
   }
 
   useEffect(() => {
@@ -24,11 +23,7 @@ const HomeScreen = props => {
         contentContainerStyle={{ paddingBottom: 5, paddingTop: 5 }}
         data={data}
         renderItem={itemData => (
-          <BookCard
-            name={itemData.item.name}
-            image={itemData.item.image}
-            action={() => props.navigation.navigate({ routeName: 'Book' })}
-          />
+          <SongCard name={itemData.item.name} artist={itemData.item.artist} action={()=>{props.navigation.navigate({routeName: 'Song'})}}/>
         )}
         keyExtractor={item => item.id}
       ></FlatList>
@@ -36,8 +31,8 @@ const HomeScreen = props => {
   )
 }
 
-HomeScreen.navigationOptions = {
-  headerTitle: 'Your Library',
+BookDetailScreen.navigationOptions = {
+  headerTitle: 'My Songbook',
   headerStyle: {
     backgroundColor: Platform.OS === 'android' ? Colors.primary : 'white'
   },
@@ -50,4 +45,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default HomeScreen
+export default BookDetailScreen

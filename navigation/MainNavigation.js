@@ -9,6 +9,7 @@ import { createMaterialBottomTabNavigator } from 'react-navigation-material-bott
 import BrowseScreen from '../screens/BrowseScreen'
 import HomeScreen from '../screens/HomeScreen'
 import SettingsScreen from '../screens/SettingsScreen'
+import BookDetailScreen from '../screens/BookDetailScreen'
 import SongDetailScreen from '../screens/SongDetailScreen'
 import Colors from '../constants/Colors'
 
@@ -19,6 +20,7 @@ const browseStackNavigator = createStackNavigator({
 
 const homeStackNavigator = createStackNavigator({
   Home: HomeScreen,
+  Book: BookDetailScreen,
   Song: SongDetailScreen
 })
 

@@ -13,12 +13,15 @@ import Colors from '../constants/Colors'
 const Card = props => {
   return Platform.OS === 'android' ? (
     <View style={{ ...styles.card, overflow: 'hidden' }}>
-      <TouchableNativeFeedback>
+      <TouchableNativeFeedback
+        background={TouchableNativeFeedback.Ripple('#dde')}
+        onPress={props.action}
+      >
         <View style={{ ...props.style, padding: 10 }}>{props.children}</View>
       </TouchableNativeFeedback>
     </View>
   ) : (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={props.action}>
       <View style={{ ...styles.card, ...props.style, padding: 10 }}>
         {props.children}
       </View>

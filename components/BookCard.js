@@ -4,27 +4,28 @@ import { StyleSheet, Text, Image, View, Platform } from 'react-native'
 import Card from './Card'
 import Colors from '../constants/Colors'
 
-const SongCard = props => {
+const BookCard = props => {
   return (
     <Card style={styles.card} action={props.action}>
       <View style={styles.imageWrapper}>
         <Image
           style={styles.image}
           source={{
-            uri:
-              'https://www.slnkorecords.sk/assets/img/artists/artist_50_home.jpg'
+            uri: props.image
           }}
           resizeMode="contain"
         />
       </View>
       <View style={styles.infoWrapper}>
         <View>
-        <Text style={styles.name}>{props.name}</Text>
-          <Text style={styles.artist}>{props.artist}</Text>
+          <Text style={styles.name}>{props.name}</Text>
+          <Text style={styles.author}>by You</Text>
         </View>
         <View style={styles.lastLine}>
-            <Text style={styles.type}>song</Text>
-            <Text style={styles.reviews}>40K <Text style={styles.stars}>★★★★☆</Text></Text>
+          <Text style={styles.type}>songbook</Text>
+          <Text style={styles.songsCount}>
+            2 songs
+          </Text>
         </View>
       </View>
     </Card>
@@ -55,12 +56,12 @@ const styles = StyleSheet.create({
     fontWeight: Platform.OS === 'android' ? '700' : '600',
     color: '#333'
   },
-  artist: {
+  author: {
     fontSize: 14,
     color: '#777',
     marginTop: Platform.OS === 'android' ? 0 : 3
   },
-  lastLine:{
+  lastLine: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-end'
@@ -71,13 +72,10 @@ const styles = StyleSheet.create({
     color: Colors.primary,
     fontWeight: 'bold'
   },
-  reviews: {
+  songsCount: {
     fontSize: 11,
     color: '#333'
-  },
-  stars: {
-    fontSize: Platform.OS === 'android' ? 14 : 12,
   }
 })
 
-export default SongCard
+export default BookCard
