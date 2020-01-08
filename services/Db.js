@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
 import * as firebase from 'firebase'
 import 'firebase/firestore'
 
 import { config } from '../firebase.config'
 
+// Db init
 try {
   firebase.initializeApp(config)
   console.log('DB init')
@@ -28,6 +28,31 @@ export const GetSongs = async () => {
       artist: 'Korben Dallas'
     })
   })
+  return result
+}
+
+export const GetSong = async () => {
+  const songRef = firestore.collection('songs').doc('qXEvyyO8sSydjiwTbEDi')
+  const song = (await songRef.get()).data()
+  const formatedText = song.text
+    .split('[-][-]')
+    .join('[--]')
+    .split('[')
+    .join('|[')
+    .split(']')
+    .join(']|')
+    .split(' ')
+    .join(' |')
+    .split('|')
+
+  filteredWords = formatedText.filter(s => s !== '')
+  console.log(filteredWords)
+
+  const result = {
+    id: 'qXEvyyO8sSydjiwTbEDi',
+    name: song.name,
+    text: filteredWords
+  }
   return result
 }
 
