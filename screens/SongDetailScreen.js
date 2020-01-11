@@ -16,7 +16,6 @@ const SongDetailScreen = props => {
   const reload = async () => {
     const song = await GetSong()
     setData({ ...song, text: song.text })
-    console.log('TEXT:', song.text)
   }
 
   useEffect(() => {
@@ -27,31 +26,17 @@ const SongDetailScreen = props => {
     <ScrollView style={styles.screen}>
       <Text style={styles.title}>{data.name}</Text>
       <Text style={styles.artist}>by Korben Dallas</Text>
-      <View
-        style={styles.textWrapper}
-      >
+      <View style={styles.textWrapper}>
         {data.text.map((t, i) => {
-          console.log(i, ':', t)
-
           if (t === '[--]') {
-            return (
-              <View
-                style={styles.newLineDouble}
-              ></View>
-            )
+            return <View style={styles.newLineDouble}></View>
           } else if (t === '[-]') {
-            return (
-              <View style={styles.newLine}></View>
-            )
+            return <View style={styles.newLine}></View>
           } else if (t[0] === '[') {
             return (
-              <View
-                style={styles.chordWrapper}
-              >
+              <View style={styles.chordWrapper}>
                 <TouchableOpacity>
-                  <Text
-                    style={styles.chordText}
-                  >
+                  <Text style={styles.chordText}>
                     {t.replace('[', '').replace(']', '')}
                   </Text>
                 </TouchableOpacity>
@@ -59,9 +44,7 @@ const SongDetailScreen = props => {
             )
           } else {
             return (
-              <View
-                style={styles.wordWrapper}
-              >
+              <View style={styles.wordWrapper}>
                 <Text style={styles.wordText}>{t}</Text>
               </View>
             )
@@ -104,7 +87,7 @@ const styles = StyleSheet.create({
   chordWrapper: {
     height: 45,
     borderWidth: 0,
-    overflow: 'visible',
+    overflow: 'visible'
     // width: 1
   },
   chordText: {
@@ -112,14 +95,14 @@ const styles = StyleSheet.create({
     color: Colors.primary,
     fontWeight: 'bold',
     // width: 50,
-    borderWidth: 0,
+    borderWidth: 0
     // fontFamily: 'roboto-mono'
   },
   wordWrapper: { minHeight: 20, borderWidth: 0 },
-  wordText: { 
-    fontSize: 16, 
-    // fontFamily: 'roboto-mono' 
-  },
+  wordText: {
+    fontSize: 16
+    // fontFamily: 'roboto-mono'
+  }
 })
 
 export default SongDetailScreen

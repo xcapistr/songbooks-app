@@ -1,16 +1,22 @@
 import React, { useState } from 'react'
-import { StyleSheet, View, Text, TouchableOpacity, Platform } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  Platform
+} from 'react-native'
 import { SearchBar } from 'react-native-elements'
 
 import Colors from '../constants/Colors'
 
 const SearchHeader = props => {
   const [query, setQuery] = useState('')
+
   return (
     <View style={styles.navbar}>
       <SearchBar
         value={query}
-        onChangeText={setQuery}
         containerStyle={styles.searchBarContainer}
         inputContainerStyle={styles.inputContainer}
         inputStyle={styles.input}
@@ -18,6 +24,11 @@ const SearchHeader = props => {
         clearIcon={{ color: Colors.lighter }}
         placeholderTextColor={Colors.lighter}
         placeholder="Search"
+        autoCapitalize="none"
+        onChangeText={query => {
+          setQuery(query)
+          props.onSearch(query)
+        }}
       />
       <TouchableOpacity style={styles.filterBtn} onPress={() => {}}>
         <Text style={styles.filterBtnLabel}>Filter</Text>

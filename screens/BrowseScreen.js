@@ -1,46 +1,86 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { StyleSheet, View, Platform, FlatList } from 'react-native'
 
 import Colors from '../constants/Colors'
 import SongCard from '../components/SongCard'
+import BookCard from '../components/BookCard'
+import ArtistCard from '../components/ArtistCard'
 import SearchHeader from '../components/SearchHeader'
-import { GetSongs } from '../services/Db'
+import { Search } from '../services/Db'
 
 const BrowseScreen = props => {
   const [data, setData] = useState([])
 
-  const getData = async () => {
-    const songs = await GetSongs()
-    setData(songs)
+  const search = async q => {
+    console.log('searching...', q)
+    const all = await Search(q)
+    setData(all)
   }
+
+  useEffect(() => {
+    props.navigation.setParams({
+      handleSearch: search
+    })
+  }, [])
 
   return (
     <View style={styles.screen}>
       <FlatList
         contentContainerStyle={{ paddingBottom: 5, paddingTop: 5 }}
         data={data}
-        renderItem={itemData => (
-          <SongCard
-            name={itemData.item.name}
-            artist={itemData.item.artist}
-            action={() => props.navigation.navigate({ routeName: 'Song' })}
-          />
-        )}
+        renderItem={itemData => {
+          if (itemData.item.type === 'song') {
+            return (
+              <SongCard
+                name={itemData.item.name}
+                artist={itemData.item.artist}
+                action={() => props.navigation.navigate({ routeName: 'Song' })}
+              />
+            )
+          } else if (itemData.item.type === 'book') {
+            return (
+              <BookCard
+                name={itemData.item.name}
+                image={itemData.item.image}
+                action={() =>
+                  props.navigation.navigate({routeName: 'Book'})
+                }
+              />
+            )
+          } else {
+            return (
+              <ArtistCard
+                name={itemData.item.name}
+                image={itemData.item.image}
+                action={() => {}}
+              />
+            )
+          }
+        }}
         keyExtractor={item => item.id}
       ></FlatList>
     </View>
   )
 }
 
-BrowseScreen.navigationOptions = {
-  headerTitle: <SearchHeader />,
-  headerStyle: {
-    backgroundColor: Platform.OS === 'android' ? Colors.primary : 'white'
-  },
-  headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary
+BrowseScreen.navigationOptions = navigationData => {
+  return {
+    headerTitle: (
+      <SearchHeader
+        onSearch={navigationData.navigation.getParam('handleSearch')}
+      />
+    ),
+    headerStyle: {
+      backgroundColor: Platform.OS === 'android' ? Colors.primary : 'white'
+    },
+    headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary
+  }
 }
 
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1
+  },
   navbar: {
     paddingTop: Platform.OS === 'android' ? 25 : 0,
     flexDirection: 'row',
