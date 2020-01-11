@@ -12,6 +12,14 @@ import Colors from '../constants/Colors'
 
 const SearchHeader = props => {
   const [query, setQuery] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+
+  const changeTextHandler = async query => {
+    setIsLoading(true)
+    setQuery(query)
+    await props.onSearch(query)
+    setIsLoading(false)
+  }
 
   return (
     <View style={styles.navbar}>
@@ -25,10 +33,8 @@ const SearchHeader = props => {
         placeholderTextColor={Colors.lighter}
         placeholder="Search"
         autoCapitalize="none"
-        onChangeText={query => {
-          setQuery(query)
-          props.onSearch(query)
-        }}
+        showLoading={isLoading}
+        onChangeText={changeTextHandler}
       />
       <TouchableOpacity style={styles.filterBtn} onPress={() => {}}>
         <Text style={styles.filterBtnLabel}>Filter</Text>
