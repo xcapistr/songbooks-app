@@ -10,11 +10,11 @@ import {
 import { GetSong } from '../services/Db'
 import Colors from '../constants/Colors'
 
-const SongDetailScreen = props => {
+const SongDetail = props => {
   const [data, setData] = useState({ id: '', name: '', text: [] })
 
-  const reload = async () => {
-    const song = await GetSong()
+  const reload = async () => {    
+    const song = await GetSong(props.id)
     setData({ ...song, text: song.text })
   }
 
@@ -53,10 +53,6 @@ const SongDetailScreen = props => {
       </View>
     </ScrollView>
   )
-}
-
-SongDetailScreen.navigationOptions = {
-  headerTitle: 'Song'
 }
 
 const styles = StyleSheet.create({
@@ -105,4 +101,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default SongDetailScreen
+export default SongDetail

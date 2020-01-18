@@ -27,6 +27,7 @@ export const GetSongs = async () => {
       artist: 'Korben Dallas'
     })
 
+    // // generating keywords
     // firestore
     //   .collection('songs')
     //   .doc(item.id)
@@ -38,13 +39,13 @@ export const GetSongs = async () => {
   return result
 }
 
-export const GetSong = async () => {
-  const songRef = firestore.collection('songs').doc('qXEvyyO8sSydjiwTbEDi')
+export const GetSong = async (id) => {
+  const songRef = firestore.collection('songs').doc(id)
   const song = (await songRef.get()).data()
   const formatedText = formatText(song.text)
 
   const result = {
-    id: 'qXEvyyO8sSydjiwTbEDi',
+    id: song.id,
     name: song.name,
     text: formatedText
   }
@@ -144,7 +145,6 @@ const generateKeywords = name => {
       }
     }
   }
-
   return keywords
 }
 

@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, FlatList, Platform } from 'react-native'
+import { StyleSheet, View, FlatList } from 'react-native'
 
-import Colors from '../constants/Colors'
 import SongCard from '../components/SongCard'
 import { GetSongs } from '../services/Db'
 
-const BookDetailScreen = props => {
+const BookDetail = props => {
   const [data, setData] = useState([])
 
   const reload = async () => {
@@ -23,20 +22,26 @@ const BookDetailScreen = props => {
         contentContainerStyle={{ paddingBottom: 5, paddingTop: 5 }}
         data={data}
         renderItem={itemData => (
-          <SongCard name={itemData.item.name} artist={itemData.item.artist} action={()=>{props.navigation.navigate({routeName: 'Song'})}}/>
+          <SongCard
+            name={itemData.item.name}
+            artist={itemData.item.artist}
+            action={() => {
+              props.navigation.navigate(
+                props.navigation.getParam('root') + 'L3',
+                {
+                  type: 'song',
+                  id: itemData.item.id,
+                  name: itemData.item.name
+                },
+                itemData.item.name
+              )
+            }}
+          />
         )}
         keyExtractor={item => item.id}
       ></FlatList>
     </View>
   )
-}
-
-BookDetailScreen.navigationOptions = {
-  headerTitle: 'My Songbook',
-  headerStyle: {
-    backgroundColor: Platform.OS === 'android' ? Colors.primary : 'white'
-  },
-  headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary
 }
 
 const styles = StyleSheet.create({
@@ -45,4 +50,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default BookDetailScreen
+export default BookDetail

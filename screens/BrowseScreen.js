@@ -12,7 +12,6 @@ const BrowseScreen = props => {
   const [data, setData] = useState([])
 
   const search = async q => {
-    console.log('searching...', q)
     const all = await Search(q)
     setData(all)
   }
@@ -34,7 +33,18 @@ const BrowseScreen = props => {
               <SongCard
                 name={itemData.item.name}
                 artist={itemData.item.artist}
-                action={() => props.navigation.navigate({ routeName: 'Song' })}
+                action={() => {
+                  props.navigation.navigate(
+                    'BrowseL2',
+                    {
+                      type: 'song',
+                      id: itemData.item.id,
+                      name: itemData.item.name,
+                      root: 'Browse'
+                    },
+                    itemData.item.name
+                  )
+                }}
               />
             )
           } else if (itemData.item.type === 'book') {
@@ -42,9 +52,18 @@ const BrowseScreen = props => {
               <BookCard
                 name={itemData.item.name}
                 image={itemData.item.image}
-                action={() =>
-                  props.navigation.navigate({routeName: 'Book'})
-                }
+                action={() => {
+                  props.navigation.navigate(
+                    'BrowseL2',
+                    {
+                      type: 'book',
+                      id: itemData.item.id,
+                      name: itemData.item.name,
+                      root: 'Browse'
+                    },
+                    itemData.item.name
+                  )
+                }}
               />
             )
           } else {
@@ -52,7 +71,18 @@ const BrowseScreen = props => {
               <ArtistCard
                 name={itemData.item.name}
                 image={itemData.item.image}
-                action={() => {}}
+                action={() => {
+                  props.navigation.navigate(
+                    'BrowseL2',
+                    {
+                      type: 'artist',
+                      id: itemData.item.id,
+                      name: itemData.item.name,
+                      root: 'Browse'
+                    },
+                    itemData.item.name
+                  )
+                }}
               />
             )
           }

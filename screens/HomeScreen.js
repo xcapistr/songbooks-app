@@ -4,7 +4,6 @@ import { StyleSheet, View, FlatList, Platform } from 'react-native'
 import Colors from '../constants/Colors'
 import BookCard from '../components/BookCard'
 import { GetBooks } from '../services/Db'
-import { reload } from 'expo/build/Updates/Updates'
 
 const HomeScreen = props => {
   const [data, setData] = useState([])
@@ -27,7 +26,18 @@ const HomeScreen = props => {
           <BookCard
             name={itemData.item.name}
             image={itemData.item.image}
-            action={() => props.navigation.navigate({ routeName: 'Book' })}
+            action={() =>
+              props.navigation.navigate(
+                'HomeL2',
+                {
+                  type: 'book',
+                  id: itemData.item.id,
+                  name: itemData.item.name,
+                  root: 'Home'
+                },
+                itemData.item.name
+              )
+            }
           />
         )}
         keyExtractor={item => item.id}

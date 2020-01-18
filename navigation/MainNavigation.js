@@ -9,19 +9,20 @@ import { createMaterialBottomTabNavigator } from 'react-navigation-material-bott
 import BrowseScreen from '../screens/BrowseScreen'
 import HomeScreen from '../screens/HomeScreen'
 import SettingsScreen from '../screens/SettingsScreen'
-import BookDetailScreen from '../screens/BookDetailScreen'
-import SongDetailScreen from '../screens/SongDetailScreen'
+import L2Screen from '../screens/L2Screen'
+import L3Screen from '../screens/L3Screen'
 import Colors from '../constants/Colors'
 
 const browseStackNavigator = createStackNavigator({
   Browse: BrowseScreen,
-  Song: SongDetailScreen
+  BrowseL2: L2Screen,
+  BrowseL3: L3Screen
 })
 
 const homeStackNavigator = createStackNavigator({
   Home: HomeScreen,
-  Book: BookDetailScreen,
-  Song: SongDetailScreen
+  HomeL2: L2Screen,
+  HomeL3: L3Screen
 })
 
 const settingsStackNavigator = createStackNavigator({
