@@ -88,6 +88,31 @@ export const GetBook = async id => {
   return result
 }
 
+export const GetArtist = async id => {
+  let result = {}
+  try {
+    const artistRef = firestore.collection('artists').doc(id)
+    const artist = (await artistRef.get()).data()
+    result = { name: artist.name, image: artist.image, songs: [] }
+
+    const songsRef = firestore
+      .collection('songs')
+      .where('artist', '==', artistRef)
+    const querySnapshot = await songsRef.get()
+    querySnapshot.forEach(item => {
+      const song = item.data()
+      result.songs.push({
+        id: item.id,
+        name: song.name,
+        artist: artist.name
+      })
+    })
+  } catch (error) {
+    console.log('ERROR:', error)
+  }
+  return result
+}
+
 export const Search = async q => {
   const query = q.toLowerCase()
   const result = []
