@@ -39,7 +39,7 @@ export const GetSongs = async () => {
   return result
 }
 
-export const GetSong = async (id) => {
+export const GetSong = async id => {
   const songRef = firestore.collection('songs').doc(id)
   const song = (await songRef.get()).data()
   const formatedText = formatText(song.text)
@@ -54,12 +54,37 @@ export const GetSong = async (id) => {
 
 export const GetBooks = async () => {
   const result = []
-  const songsRef = firestore.collection('songbooks')
-  const querySnapshot = await songsRef.get()
-  querySnapshot.forEach(item => {
-    const book = item.data()
-    result.push({ id: item.id, name: book.name, image: book.image })
-  })
+  try {
+    const songsRef = firestore.collection('songbooks')
+    const querySnapshot = await songsRef.get()
+    querySnapshot.forEach(item => {
+      const book = item.data()
+      result.push({ id: item.id, name: book.name, image: book.image })
+    })
+  } catch (error) {
+    console.log('ERROR:', error)
+  }
+  return result
+}
+
+export const GetBook = async id => {
+  let result = {}
+  try {
+    const bookRef = firestore.collection('songbooks').doc(id)
+    const book = (await bookRef.get()).data()
+    result = { name: book.name, image: book.image, songs: [] }
+    await Promise.all(
+      book.songs.map(async item => {
+        const song = (await item.get()).data()
+        result.songs.push({
+          id: item.id,
+          name: song.name
+        })
+      })
+    )
+  } catch (error) {
+    console.log('ERROR:', error)
+  }
   return result
 }
 
