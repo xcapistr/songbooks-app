@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, FlatList, Platform } from 'react-native'
+import { StyleSheet, View, FlatList } from 'react-native'
 
 import Colors from '../constants/Colors'
 import BookCard from '../components/BookCard'
@@ -49,9 +49,9 @@ const HomeScreen = props => {
 HomeScreen.navigationOptions = {
   headerTitle: 'Your Library',
   headerStyle: {
-    backgroundColor: Platform.OS === 'android' ? Colors.primary : 'white'
+    backgroundColor: 'white'
   },
-  headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary
+  headerTintColor: Colors.primary
 }
 
 const styles = StyleSheet.create({

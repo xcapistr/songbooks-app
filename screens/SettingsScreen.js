@@ -14,9 +14,9 @@ const SettingsScreen = props => {
 SettingsScreen.navigationOptions = {
     headerTitle: 'User Settings',
     headerStyle: {
-      backgroundColor: Platform.OS === 'android' ? Colors.primary : 'white'
+      backgroundColor: 'white'
     },
-    headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary
+    headerTintColor: Colors.primary
 }
 
 const styles = StyleSheet.create({

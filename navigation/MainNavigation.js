@@ -68,9 +68,9 @@ const mainTabNavigator =
     ? createMaterialBottomTabNavigator(mainTabNavigatorConfig, {
         shifting: true,
         barStyle: {
-          backgroundColor: Colors.primary
+          backgroundColor: 'white'
         },
-        activeColor: 'white',
+        activeColor: Colors.primary,
         inactiveColor: Colors.lighter
       })
     : createBottomTabNavigator(mainTabNavigatorConfig, {

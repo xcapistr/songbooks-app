@@ -28,9 +28,9 @@ const SearchHeader = props => {
         containerStyle={styles.searchBarContainer}
         inputContainerStyle={styles.inputContainer}
         inputStyle={styles.input}
-        searchIcon={{ color: Colors.lighter }}
-        clearIcon={{ color: Colors.lighter }}
-        placeholderTextColor={Colors.lighter}
+        searchIcon={{ color: Colors.primary }}
+        clearIcon={{ color: Colors.primary }}
+        placeholderTextColor={Colors.primary}
         placeholder="Search"
         autoCapitalize="none"
         showLoading={isLoading}
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   },
   filterBtnLabel: {
     fontSize: 17,
-    color: Platform.OS === 'android' ? Colors.lighter : Colors.primary,
+    color: Colors.primary,
     fontWeight: '600'
   },
   searchBarContainer: {
@@ -71,13 +71,12 @@ const styles = StyleSheet.create({
     paddingVertical: 0
   },
   inputContainer: {
-    backgroundColor:
-      Platform.OS === 'android' ? Colors.darker : Colors.lightest,
+    backgroundColor: Colors.lightest,
     borderRadius: 15,
     height: Platform.OS === 'android' ? 40 : 30
   },
   input: {
-    color: Platform.OS === 'android' ? Colors.lightest : Colors.primary
+    color: Colors.primary
   }
 })
 

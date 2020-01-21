@@ -101,51 +101,15 @@ BrowseScreen.navigationOptions = navigationData => {
       />
     ),
     headerStyle: {
-      backgroundColor: Platform.OS === 'android' ? Colors.primary : 'white'
+      backgroundColor: 'white'
     },
-    headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary
+    headerTintColor: Colors.primary
   }
 }
 
 const styles = StyleSheet.create({
   screen: {
     flex: 1
-  },
-  navbar: {
-    paddingTop: Platform.OS === 'android' ? 25 : 0,
-    flexDirection: 'row',
-    alignItems: 'center',
-    elevation: 5,
-    backgroundColor: Platform.OS === 'android' ? Colors.primary : 'white',
-    borderBottomWidth: Platform.OS === 'android' ? 0 : 1,
-    borderBottomColor: '#ccc'
-  },
-  filterBtn: {
-    paddingLeft: 15,
-    paddingRight: 17,
-    height: 40,
-    justifyContent: 'center'
-  },
-  filterBtnLabel: {
-    fontSize: 17,
-    color: Platform.OS === 'android' ? Colors.lighter : Colors.primary,
-    fontWeight: '600'
-  },
-  searchBarContainer: {
-    flex: 1,
-    backgroundColor: 'transparent',
-    borderBottomColor: 'transparent',
-    borderTopColor: 'transparent',
-    paddingRight: 0
-  },
-  inputContainer: {
-    backgroundColor:
-      Platform.OS === 'android' ? Colors.darker : Colors.lightest,
-    borderRadius: 15,
-    height: 40
-  },
-  input: {
-    color: Platform.OS === 'android' ? Colors.lightest : Colors.primary
   }
 })
 

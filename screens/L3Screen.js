@@ -2,6 +2,7 @@ import React from 'react'
 import { StyleSheet } from 'react-native'
 
 import SongDetail from '../components/SongDetail'
+import Colors from '../constants/Colors'
 
 const BrowseL3Screen = props => {
   return <SongDetail id={props.navigation.getParam('id')} />
@@ -9,7 +10,11 @@ const BrowseL3Screen = props => {
 
 BrowseL3Screen.navigationOptions = navigationData => {
   return {
-    headerTitle: navigationData.navigation.getParam('name')
+    headerTitle: navigationData.navigation.getParam('name'),
+    headerStyle: {
+      backgroundColor: 'white'
+    },
+    headerTintColor: Colors.primary
   }
 }
 

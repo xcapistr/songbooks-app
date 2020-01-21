@@ -4,6 +4,7 @@ import { StyleSheet } from 'react-native'
 import SongDetail from '../components/SongDetail'
 import BookDetail from '../components/BookDetail'
 import ArtistDetail from '../components/ArtistDetail'
+import Colors from '../constants/Colors'
 
 const BrowseL2Screen = props => {
   const content =
@@ -26,7 +27,11 @@ const BrowseL2Screen = props => {
 
 BrowseL2Screen.navigationOptions = navigationData => {
   return {
-    headerTitle: navigationData.navigation.getParam('name')
+    headerTitle: navigationData.navigation.getParam('name'),
+    headerStyle: {
+      backgroundColor: 'white'
+    },
+    headerTintColor: Colors.primary
   }
 }
 
