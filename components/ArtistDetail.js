@@ -29,8 +29,8 @@ const ArtistDetail = props => {
         ListHeaderComponent={ListHeader(data.image)}
         renderItem={itemData => (
           <SongCard
+            mini
             name={itemData.item.name}
-            artist={itemData.item.artist}
             action={() => {
               props.navigation.navigate(
                 props.navigation.getParam('root') + 'L3',

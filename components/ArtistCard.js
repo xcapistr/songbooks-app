@@ -13,7 +13,7 @@ const ArtistCard = props => {
           source={{
             uri: props.image
           }}
-          resizeMode="contain"
+          resizeMode="cover"
         />
       </View>
       <View style={styles.infoWrapper}>

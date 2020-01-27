@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, Platform, FlatList } from 'react-native'
+import { StyleSheet, View, FlatList } from 'react-native'
 
 import Colors from '../constants/Colors'
 import SongCard from '../components/SongCard'
@@ -32,7 +32,8 @@ const BrowseScreen = props => {
             return (
               <SongCard
                 name={itemData.item.name}
-                artist={itemData.item.artist}
+                artist={itemData.item.artist.name}
+                image={itemData.item.artist.image}
                 action={() => {
                   props.navigation.navigate(
                     'BrowseL2',

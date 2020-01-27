@@ -15,7 +15,7 @@ const ListHeader = image => (
 )
 
 const BookDetail = props => {
-  const [data, setData] = useState({ songs: [] })
+  const [data, setData] = useState({})
 
   const reload = async () => {
     const book = await GetBook(props.navigation.getParam('id'))
@@ -35,7 +35,8 @@ const BookDetail = props => {
           renderItem={itemData => (
             <SongCard
               name={itemData.item.name}
-              artist={itemData.item.artist}
+              artist={itemData.item.artist.name}
+              image={itemData.item.artist.image}
               action={() => {
                 props.navigation.navigate(
                   props.navigation.getParam('root') + 'L3',

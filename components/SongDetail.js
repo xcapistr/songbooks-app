@@ -25,7 +25,7 @@ const SongDetail = props => {
   return (
     <ScrollView style={styles.screen}>
       <Text style={styles.title}>{data.name}</Text>
-      <Text style={styles.artist}>by Korben Dallas</Text>
+      <Text style={styles.artist}>by {data.artist}</Text>
       <View style={styles.textWrapper}>
         {data.text.map((t, i) => {
           if (t === '[--]') {

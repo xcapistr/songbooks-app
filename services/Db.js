@@ -13,31 +13,29 @@ try {
 const firestore = firebase.firestore()
 
 // TODO: inject firestore db
+// export const GetSongs = async songsRef => {
+//   const result = []
+//   const querySnapshot = await songsRef.get()
+//   querySnapshot.forEach(item => {
+//     const song = item.data()
+//     result.push({
+//       id: item.id,
+//       name: song.name,
+//       text: song.text,
+//       artist: 'Korben Dallas'
+//     })
 
-export const GetSongs = async () => {
-  const result = []
-  const songsRef = firestore.collection('songs')
-  const querySnapshot = await songsRef.get()
-  querySnapshot.forEach(item => {
-    const song = item.data()
-    result.push({
-      id: item.id,
-      name: song.name,
-      text: song.text,
-      artist: 'Korben Dallas'
-    })
-
-    // // generating keywords
-    // firestore
-    //   .collection('songs')
-    //   .doc(item.id)
-    //   .set({
-    //     ...song,
-    //     keywords: generateKeywords(song.name)
-    //   })
-  })
-  return result
-}
+//     // // generating keywords
+//     // firestore
+//     //   .collection('songs')
+//     //   .doc(item.id)
+//     //   .set({
+//     //     ...song,
+//     //     keywords: generateKeywords(song.name)
+//     //   })
+//   })
+//   return result
+// }
 
 export const GetSong = async id => {
   const songRef = firestore.collection('songs').doc(id)
@@ -47,7 +45,8 @@ export const GetSong = async id => {
   const result = {
     id: song.id,
     name: song.name,
-    text: formatedText
+    text: formatedText,
+    artist: song.artist.name
   }
   return result
 }
@@ -68,49 +67,59 @@ export const GetBooks = async () => {
 }
 
 export const GetBook = async id => {
-  let result = {}
   try {
+    // get book
     const bookRef = firestore.collection('songbooks').doc(id)
-    const book = (await bookRef.get()).data()
-    result = { name: book.name, image: book.image, songs: [] }
-    await Promise.all(
-      book.songs.map(async item => {
-        const song = (await item.get()).data()
-        result.songs.push({
-          id: item.id,
-          name: song.name
-        })
+    const bookData = (await bookRef.get()).data()
+    const songIds = bookData.songs
+    const book = {
+      name: bookData.name,
+      image: bookData.image,
+      songs: []
+    }
+
+    //get songs
+    const songsRef = firestore
+      .collection('songs')
+      .where(firebase.firestore.FieldPath.documentId(), 'in', songIds)
+    const songsSnapshot = await songsRef.get()
+    songsSnapshot.forEach(item => {
+      const songData = item.data()
+      book.songs.push({
+        id: item.id,
+        name: songData.name,
+        artist: {
+          id: songData.artist.id,
+          name: songData.artist.name,
+          image: songData.artist.image
+        }
       })
-    )
+    })
+    return book
   } catch (error) {
     console.log('ERROR:', error)
   }
-  return result
 }
 
 export const GetArtist = async id => {
-  let result = {}
   try {
     const artistRef = firestore.collection('artists').doc(id)
     const artist = (await artistRef.get()).data()
-    result = { name: artist.name, image: artist.image, songs: [] }
+    const result = { name: artist.name, image: artist.image, songs: [] }
 
-    const songsRef = firestore
-      .collection('songs')
-      .where('artist', '==', artistRef)
-    const querySnapshot = await songsRef.get()
-    querySnapshot.forEach(item => {
+    const songsRef = firestore.collection('songs').where('artist.id', '==', id)
+    const songsSnapshot = await songsRef.get()
+    songsSnapshot.forEach(item => {
       const song = item.data()
       result.songs.push({
         id: item.id,
-        name: song.name,
-        artist: artist.name
+        name: song.name
       })
     })
+    return result
   } catch (error) {
     console.log('ERROR:', error)
   }
-  return result
 }
 
 export const Search = async q => {
@@ -160,7 +169,11 @@ export const Search = async q => {
       type: 'song',
       name: song.name,
       text: song.text,
-      artist: 'Korben Dallas'
+      artist: {
+        id: song.artist.id,
+        name: song.artist.name,
+        image: song.artist.image
+      }
     })
   })
   return result
@@ -212,3 +225,5 @@ const formatText = text => {
   const filteredWords = formatedText.filter(s => s !== '')
   return filteredWords
 }
+
+const testQuery = async () => {}
