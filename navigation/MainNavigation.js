@@ -19,11 +19,36 @@ const browseStackNavigator = createStackNavigator({
   BrowseL3: L3Screen
 })
 
+browseStackNavigator.navigationOptions = ({ navigation }) => {
+  let tabBarVisible = true
+  const routes = navigation.state.routes
+  const type =
+    routes[routes.length - 1] &&
+    routes[routes.length - 1].params &&
+    routes[routes.length - 1].params.type
+  if (type === 'song') {
+    tabBarVisible = false
+  }
+  return {
+    tabBarVisible
+  }
+}
+
 const homeStackNavigator = createStackNavigator({
   Home: HomeScreen,
   HomeL2: L2Screen,
   HomeL3: L3Screen
 })
+
+homeStackNavigator.navigationOptions = ({ navigation }) => {
+  let tabBarVisible = true
+  if (navigation.state.index > 1) {
+    tabBarVisible = false
+  }
+  return {
+    tabBarVisible
+  }
+}
 
 const settingsStackNavigator = createStackNavigator({
   Settings: SettingsScreen
