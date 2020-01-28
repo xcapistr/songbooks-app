@@ -4,7 +4,8 @@ import {
   View,
   Text,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  ActivityIndicator
 } from 'react-native'
 
 import { GetSong } from '../services/Db'
@@ -12,15 +13,26 @@ import Colors from '../constants/Colors'
 
 const SongDetail = props => {
   const [data, setData] = useState({ id: '', name: '', text: [] })
+  const [isLoading, setIsLoading] = useState(false)
 
-  const reload = async () => {    
+  const reload = async () => {
+    setIsLoading(true)
     const song = await GetSong(props.id)
     setData({ ...song, text: song.text })
+    setIsLoading(false)
   }
 
   useEffect(() => {
     reload()
   }, [])
+
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color={Colors.primary} />
+      </View>
+    )
+  }
 
   return (
     <ScrollView style={styles.screen}>
@@ -56,6 +68,11 @@ const SongDetail = props => {
 }
 
 const styles = StyleSheet.create({
+  centered: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   screen: {
     flex: 1,
     padding: 20

@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, FlatList, Image, TouchableOpacity, Text } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  FlatList,
+  Image,
+  TouchableOpacity,
+  Text,
+  ActivityIndicator
+} from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 
 import { GetBook } from '../services/Db'
@@ -22,15 +30,26 @@ const ListFooter = () => (
 
 const BookDetail = props => {
   const [data, setData] = useState({})
+  const [isLoading, setIsLoading] = useState(false)
 
   const reload = async () => {
+    setIsLoading(true)
     const book = await GetBook(props.navigation.getParam('id'))
     setData(book)
+    setIsLoading(false)
   }
 
   useEffect(() => {
     reload()
   }, [])
+
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color={Colors.primary} />
+      </View>
+    )
+  }
 
   return (
     <View style={styles.screen}>
@@ -69,6 +88,11 @@ const BookDetail = props => {
 }
 
 const styles = StyleSheet.create({
+  centered: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   screen: {
     flex: 1
   },

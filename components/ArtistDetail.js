@@ -6,6 +6,7 @@ import {
   Image,
   Text,
   TouchableOpacity,
+  ActivityIndicator
 } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 
@@ -29,15 +30,26 @@ const ListFooter = () => (
 
 const ArtistDetail = props => {
   const [data, setData] = useState({ songs: [] })
+  const [isLoading, setIsLoading] = useState(false)
 
   const reload = async () => {
+    setIsLoading(true)
     const artist = await GetArtist(props.navigation.getParam('id'))
     setData(artist)
+    setIsLoading(false)
   }
 
   useEffect(() => {
     reload()
   }, [])
+
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color={Colors.primary} />
+      </View>
+    )
+  }
 
   return (
     <View style={styles.screen}>
@@ -80,6 +92,11 @@ const ArtistDetail = props => {
 }
 
 const styles = StyleSheet.create({
+  centered: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   screen: {
     flex: 1
   },
