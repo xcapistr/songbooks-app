@@ -5,15 +5,18 @@ import {
   Text,
   ScrollView,
   TouchableOpacity,
-  ActivityIndicator
+  ActivityIndicator,
+  TouchableWithoutFeedback
 } from 'react-native'
 
 import { GetSong } from '../services/Db'
 import Colors from '../constants/Colors'
+import SongToolbar from './SongToolbar'
 
 const SongDetail = props => {
   const [data, setData] = useState({ id: '', name: '', text: [] })
   const [isLoading, setIsLoading] = useState(false)
+  const [showToolbar, setShowToolbar] = useState(false)
 
   const reload = async () => {
     setIsLoading(true)
@@ -26,6 +29,10 @@ const SongDetail = props => {
     reload()
   }, [])
 
+  const toggleToolbar = () => {
+    setShowToolbar(prevState => !prevState)
+  }
+
   if (isLoading) {
     return (
       <View style={styles.centered}>
@@ -35,35 +42,42 @@ const SongDetail = props => {
   }
 
   return (
-    <ScrollView style={styles.screen}>
-      <Text style={styles.title}>{data.name}</Text>
-      <Text style={styles.artist}>by {data.artist}</Text>
-      <View style={styles.textWrapper}>
-        {data.text.map((t, i) => {
-          if (t === '[--]') {
-            return <View style={styles.newLineDouble}></View>
-          } else if (t === '[-]') {
-            return <View style={styles.newLine}></View>
-          } else if (t[0] === '[') {
-            return (
-              <View style={styles.chordWrapper}>
-                <TouchableOpacity>
-                  <Text style={styles.chordText}>
-                    {t.replace('[', '').replace(']', '')}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            )
-          } else {
-            return (
-              <View style={styles.wordWrapper}>
-                <Text style={styles.wordText}>{t}</Text>
-              </View>
-            )
-          }
-        })}
-      </View>
-    </ScrollView>
+    <View style={styles.screen}>
+      <ScrollView style={styles.scrollView}>
+        <TouchableWithoutFeedback onPress={toggleToolbar}>
+          <View>
+            <Text style={styles.title}>{data.name}</Text>
+            <Text style={styles.artist}>by {data.artist}</Text>
+            <View style={styles.textWrapper}>
+              {data.text.map((t, i) => {
+                if (t === '[--]') {
+                  return <View style={styles.newLineDouble}></View>
+                } else if (t === '[-]') {
+                  return <View style={styles.newLine}></View>
+                } else if (t[0] === '[') {
+                  return (
+                    <View style={styles.chordWrapper}>
+                      <TouchableOpacity>
+                        <Text style={styles.chordText}>
+                          {t.replace('[', '').replace(']', '')}
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  )
+                } else {
+                  return (
+                    <View style={styles.wordWrapper}>
+                      <Text style={styles.wordText}>{t}</Text>
+                    </View>
+                  )
+                }
+              })}
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </ScrollView>
+      <SongToolbar show={showToolbar}></SongToolbar>
+    </View>
   )
 }
 
@@ -74,6 +88,10 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   screen: {
+    flex: 1,
+    alignItems: 'center'
+  },
+  scrollView: {
     flex: 1,
     padding: 20
   },
@@ -93,7 +111,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     flexWrap: 'wrap',
     marginTop: 20,
-    marginBottom: 50
+    marginBottom: 150
   },
   newLineDouble: { height: 20, borderWidth: 0, width: '100%' },
   newLine: { height: 1, borderWidth: 0, width: '100%' },
