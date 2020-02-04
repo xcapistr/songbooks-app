@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import {
   StyleSheet,
   View,
@@ -6,17 +6,33 @@ import {
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  Animated
 } from 'react-native'
 
 import { GetSong } from '../services/Db'
 import Colors from '../constants/Colors'
 import SongToolbar from './SongToolbar'
+import { Easing } from 'react-native-reanimated'
 
 const SongDetail = props => {
   const [data, setData] = useState({ id: '', name: '', text: [] })
   const [isLoading, setIsLoading] = useState(false)
   const [showToolbar, setShowToolbar] = useState(false)
+  const [scrollContentHeight, setScrollContentHeight] = useState(0)
+  const [scrollViewHeight, setScrollViewHeight] = useState(0)
+  const [actualScrollPos, setActualScrollPos] = useState(0)
+  const [isPlaying, setIsPlaying] = useState(false)
+
+  const scrollArea = useRef(null)
+
+  const scrollAnimatedValue = new Animated.Value(0)
+
+  scrollAnimatedValue.addListener(({ value }) => {
+    scrollArea.current.scrollTo({ y: value, animated: false })
+  })
+
+  const [scrollAnimationPos] = useState(scrollAnimatedValue)
 
   const reload = async () => {
     setIsLoading(true)
@@ -33,6 +49,23 @@ const SongDetail = props => {
     setShowToolbar(prevState => !prevState)
   }
 
+  const togglePlay = () => {
+    if (!isPlaying) {
+      setIsPlaying(true)
+      const scrollEnd = scrollContentHeight - scrollViewHeight
+      const distanceFromEnd = scrollEnd - actualScrollPos
+      scrollAnimationPos.setValue(actualScrollPos)
+      Animated.timing(scrollAnimationPos, {
+        toValue: scrollEnd,
+        duration: distanceFromEnd * 60,
+        easing: Easing.linear,
+        useNativeDriver: true
+      }).start(() => setIsPlaying(false))
+    } else {
+      Animated.timing(scrollAnimationPos).stop()
+    }
+  }
+
   if (isLoading) {
     return (
       <View style={styles.centered}>
@@ -43,40 +76,54 @@ const SongDetail = props => {
 
   return (
     <View style={styles.screen}>
-      <ScrollView style={styles.scrollView}>
+      <ScrollView
+        style={styles.scrollView}
+        ref={scrollArea}
+        scrollEnabled={!isPlaying}
+        onScroll={e => {
+          setActualScrollPos(e.nativeEvent.contentOffset.y)
+        }}
+        onContentSizeChange={(w, h) => {
+          setScrollContentHeight(h)
+          isPlaying && togglePlay()
+        }}
+        onLayout={e => {
+          setScrollViewHeight(e.nativeEvent.layout.height)
+        }}
+      >
         <TouchableWithoutFeedback onPress={toggleToolbar}>
           <View>
             <Text style={styles.title}>{data.name}</Text>
             <Text style={styles.artist}>by {data.artist}</Text>
             <View style={styles.textWrapper}>
-              {data.text.map((t, i) => {
-                if (t === '[--]') {
-                  return <View style={styles.newLineDouble}></View>
-                } else if (t === '[-]') {
-                  return <View style={styles.newLine}></View>
-                } else if (t[0] === '[') {
-                  return (
-                    <View style={styles.chordWrapper}>
-                      <TouchableOpacity>
-                        <Text style={styles.chordText}>
-                          {t.replace('[', '').replace(']', '')}
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                  )
-                } else {
-                  return (
-                    <View style={styles.wordWrapper}>
-                      <Text style={styles.wordText}>{t}</Text>
-                    </View>
-                  )
-                }
-              })}
+              {data.text.map((t, i) =>
+                t === '[--]' ? (
+                  <View style={styles.newLineDouble}></View>
+                ) : t === '[-]' ? (
+                  <View style={styles.newLine}></View>
+                ) : t[0] === '[' ? (
+                  <View style={styles.chordWrapper}>
+                    <TouchableOpacity>
+                      <Text style={styles.chordText}>
+                        {t.replace('[', '').replace(']', '')}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                ) : (
+                  <View style={styles.wordWrapper}>
+                    <Text style={styles.wordText}>{t}</Text>
+                  </View>
+                )
+              )}
             </View>
           </View>
         </TouchableWithoutFeedback>
       </ScrollView>
-      <SongToolbar show={showToolbar}></SongToolbar>
+      <SongToolbar
+        show={showToolbar}
+        onTogglePlay={togglePlay}
+        isPlaying={isPlaying}
+      ></SongToolbar>
     </View>
   )
 }

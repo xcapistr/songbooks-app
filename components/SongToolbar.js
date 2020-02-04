@@ -1,27 +1,30 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, Text, TouchableOpacity, Animated } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  Animated
+} from 'react-native'
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 
 import Colors from '../constants/Colors'
 
 const SongToolbar = props => {
   const [transposition, setTransposition] = useState(0)
-  const [bottomAnim] = useState(new Animated.Value(-100)) 
+  const [bottomAnim] = useState(new Animated.Value(-100))
 
   useEffect(() => {
     const bottom = props.show ? 0 : -100
-    Animated.spring(
-      bottomAnim,
-      {
-        toValue: bottom,
-        speed: 20,
-        bounciness: 15
-      }
-    ).start();
+    Animated.spring(bottomAnim, {
+      toValue: bottom,
+      speed: 20,
+      bounciness: 15
+    }).start()
   }, [props.show])
 
   return (
-    <Animated.View style={{...styles.wrapper, bottom: bottomAnim}}>
+    <Animated.View style={{ ...styles.wrapper, bottom: bottomAnim }}>
       <View style={styles.toolbar}>
         <TouchableOpacity style={styles.toolbarButton}>
           <MaterialCommunityIcons
@@ -61,12 +64,14 @@ const SongToolbar = props => {
         <TouchableOpacity style={styles.toolbarButton}>
           <Ionicons name="ios-speedometer" size={25} color={Colors.primary} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.toolbarMiddleButton}>
+        <TouchableOpacity
+          style={styles.toolbarMiddleButton}
+          onPress={props.onTogglePlay}
+        >
           <Ionicons
-            name="ios-play"
+            name={props.isPlaying ? 'ios-pause' : 'ios-play'}
             size={25}
             color="white"
-            style={{ marginLeft: 3, marginTop: 2 }}
           />
         </TouchableOpacity>
       </View>
