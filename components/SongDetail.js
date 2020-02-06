@@ -9,11 +9,13 @@ import {
   TouchableWithoutFeedback,
   Animated
 } from 'react-native'
+import { Easing } from 'react-native-reanimated'
 
+import NewModal from './NewModal'
 import { GetSong } from '../services/Db'
 import Colors from '../constants/Colors'
 import SongToolbar from './SongToolbar'
-import { Easing } from 'react-native-reanimated'
+import ChordDetail from './ChordDetail'
 
 const SongDetail = props => {
   const [data, setData] = useState({ id: '', name: '', text: [] })
@@ -23,6 +25,8 @@ const SongDetail = props => {
   const [scrollViewHeight, setScrollViewHeight] = useState(0)
   const [actualScrollPos, setActualScrollPos] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [chord, setChord] = useState(null)
 
   const scrollArea = useRef(null)
 
@@ -76,6 +80,17 @@ const SongDetail = props => {
 
   return (
     <View style={styles.screen}>
+      <NewModal
+        isVisible={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false)
+        }}
+      >
+        <View style={styles.chordDetailWrapper}>
+          <ChordDetail chord={chord}></ChordDetail>
+        </View>
+      </NewModal>
+
       <ScrollView
         style={styles.scrollView}
         ref={scrollArea}
@@ -103,7 +118,13 @@ const SongDetail = props => {
                   <View style={styles.newLine}></View>
                 ) : t[0] === '[' ? (
                   <View style={styles.chordWrapper}>
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => {
+                        const akord = t.replace('[', '').replace(']', '')
+                        setChord(akord)
+                        setIsModalOpen(true)
+                      }}
+                    >
                       <Text style={styles.chordText}>
                         {t.replace('[', '').replace(']', '')}
                       </Text>
@@ -180,6 +201,19 @@ const styles = StyleSheet.create({
   wordText: {
     fontSize: 16
     // fontFamily: 'roboto-mono'
+  },
+  chordDetailWrapper: {
+    backgroundColor: 'white',
+    width: 300,
+    padding: 22,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+    shadowColor: Colors.darker,
+    shadowOffset: { with: 0, height: 2 },
+    shadowOpacity: 0.26,
+    shadowRadius: 4,
+    elevation: 4
   }
 })
 
