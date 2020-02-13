@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     color: Colors.primary,
-    marginBottom: 20
+    marginBottom: 10
   },
   errorMessageWrapper: {
     alignItems: 'center'
