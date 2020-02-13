@@ -115,9 +115,11 @@ const SongDetail = props => {
                   <View style={styles.chordWrapper}>
                     <TouchableOpacity
                       onPress={() => {
-                        const akord = t.replace('[', '').replace(']', '')
-                        setChord(akord)
-                        setIsModalOpen(true)
+                        if (!isPlaying) {
+                          const akord = t.replace('[', '').replace(']', '')
+                          setChord(akord)
+                          setIsModalOpen(true)
+                        }
                       }}
                     >
                       <Text style={styles.chordText}>
