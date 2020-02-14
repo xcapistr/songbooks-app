@@ -11,10 +11,11 @@ import {
 } from 'react-native'
 import { Easing } from 'react-native-reanimated'
 
-import ChordModal from './ChordModal'
+import Modal from './Modal'
 import { GetSong } from '../services/Db'
 import Colors from '../constants/Colors'
 import SongToolbar from './SongToolbar'
+import ChordDetail from './ChordDetail'
 
 const SongDetail = props => {
   const [data, setData] = useState({ id: '', name: '', text: [] })
@@ -79,13 +80,20 @@ const SongDetail = props => {
 
   return (
     <View style={styles.screen}>
-      <ChordModal
-        chord={chord}
+      <Modal
+        title="Chord detail"
         isVisible={isModalOpen}
-        onClose={() => {
-          setIsModalOpen(false)
-        }}
-      ></ChordModal>
+        buttons={[
+          {
+            title: 'OK',
+            action: () => {
+              setIsModalOpen(false)
+            }
+          }
+        ]}
+      >
+        <ChordDetail chord={chord}></ChordDetail>
+      </Modal>
       <ScrollView
         style={styles.scrollView}
         ref={scrollArea}
