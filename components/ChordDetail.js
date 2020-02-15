@@ -17,7 +17,6 @@ const ChordDetail = props => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{props.chord}</Text>
       {position && schema ? (
         <ChordSchema
           width={100}
@@ -38,8 +37,7 @@ const ChordDetail = props => {
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
-    alignItems: 'center',
-    paddingBottom: 20
+    alignItems: 'center'
   },
   title: {
     fontSize: 24,

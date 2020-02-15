@@ -16,6 +16,7 @@ import { GetSong } from '../services/Db'
 import Colors from '../constants/Colors'
 import SongToolbar from './SongToolbar'
 import ChordDetail from './ChordDetail'
+import Slider from './Slider'
 
 const SongDetail = props => {
   const [data, setData] = useState({ id: '', name: '', text: [] })
@@ -25,7 +26,7 @@ const SongDetail = props => {
   const [scrollViewHeight, setScrollViewHeight] = useState(0)
   const [actualScrollPos, setActualScrollPos] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [openedModal, setOpenedModal] = useState(null)
   const [chord, setChord] = useState(null)
 
   const scrollArea = useRef(null)
@@ -81,18 +82,52 @@ const SongDetail = props => {
   return (
     <View style={styles.screen}>
       <Modal
-        title="Chord detail"
-        isVisible={isModalOpen}
+        title={chord}
+        isVisible={openedModal==='chord'}
         buttons={[
           {
             title: 'OK',
             action: () => {
-              setIsModalOpen(false)
+              setOpenedModal(null)
             }
           }
         ]}
       >
         <ChordDetail chord={chord}></ChordDetail>
+      </Modal>
+      <Modal
+        title="Text size"
+        isVisible={openedModal==='text-size'}
+        buttons={[
+          {
+            title: 'cancel',
+            action: () => {
+              setOpenedModal(null)
+            }
+          },
+          {
+            title: 'ok',
+            type: 'primary',
+            action: () => {
+              setOpenedModal(null)
+            }
+          }
+        ]}
+      >
+        <Text>Font size:</Text>
+        <Slider
+          minimumValue={1}
+          maximumValue={7}
+          step={1}
+          onValueChange={value => {}}
+        ></Slider>
+        <Text style={{ marginTop: 15 }}>Chord size:</Text>
+        <Slider
+          minimumValue={1}
+          maximumValue={7}
+          step={1}
+          onValueChange={value => {}}
+        ></Slider>
       </Modal>
       <ScrollView
         style={styles.scrollView}
@@ -126,7 +161,7 @@ const SongDetail = props => {
                         if (!isPlaying) {
                           const akord = t.replace('[', '').replace(']', '')
                           setChord(akord)
-                          setIsModalOpen(true)
+                          setOpenedModal('chord')
                         }
                       }}
                     >
@@ -149,6 +184,7 @@ const SongDetail = props => {
         show={showToolbar}
         onTogglePlay={togglePlay}
         isPlaying={isPlaying}
+        onTextSize={()=>{setOpenedModal('text-size')}}
       ></SongToolbar>
     </View>
   )

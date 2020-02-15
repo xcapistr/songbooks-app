@@ -26,7 +26,7 @@ const SongToolbar = props => {
   return (
     <Animated.View style={{ ...styles.wrapper, bottom: bottomAnim }}>
       <View style={styles.toolbar}>
-        <TouchableOpacity style={styles.toolbarButton}>
+        <TouchableOpacity style={styles.toolbarButton} onPress={props.onTextSize}>
           <MaterialCommunityIcons
             name="format-size"
             size={25}

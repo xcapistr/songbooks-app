@@ -184,7 +184,9 @@ const ChordSchema = props => {
 }
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    marginBottom: 20
+  },
   position: {
     position: 'absolute',
     justifyContent: 'center',
