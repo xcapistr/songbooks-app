@@ -11,7 +11,6 @@ import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 import Colors from '../constants/Colors'
 
 const SongToolbar = props => {
-  const [transposition, setTransposition] = useState(0)
   const [bottomAnim] = useState(new Animated.Value(-100))
 
   useEffect(() => {
@@ -43,20 +42,15 @@ const SongToolbar = props => {
         <View style={styles.divider}></View>
         <TouchableOpacity
           style={styles.toolbarButton}
-          onPress={() => {
-            setTransposition(transposition - 1)
-          }}
-        >
+          onPress={props.transposeDown}>
           <Ionicons name="ios-remove" size={20} color={Colors.primary} />
         </TouchableOpacity>
         <View style={styles.transpositionDisplay}>
-          <Text style={styles.transpositionText}>{transposition}</Text>
+          <Text style={styles.transpositionText}>{props.transposition}</Text>
         </View>
         <TouchableOpacity
           style={styles.toolbarButton}
-          onPress={() => {
-            setTransposition(transposition + 1)
-          }}
+          onPress={props.transposeUp}
         >
           <Ionicons name="ios-add" size={20} color={Colors.primary} />
         </TouchableOpacity>

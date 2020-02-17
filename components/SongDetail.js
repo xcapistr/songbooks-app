@@ -17,6 +17,7 @@ import Colors from '../constants/Colors'
 import SongToolbar from './SongToolbar'
 import ChordDetail from './ChordDetail'
 import Slider from './Slider'
+import transpose from '../services/Transpose'
 
 const SongDetail = props => {
   const [data, setData] = useState({ id: '', name: '', text: [] })
@@ -30,6 +31,7 @@ const SongDetail = props => {
   const [chord, setChord] = useState(null)
   const [textSize, setTextSize] = useState(12)
   const [chordSize, setChordSize] = useState(14)
+  const [transposition, setTransposition] = useState(2)
 
   const scrollArea = useRef(null)
 
@@ -172,24 +174,23 @@ const SongDetail = props => {
                     <TouchableOpacity
                       onPress={() => {
                         if (!isPlaying) {
-                          const akord = t.replace('[', '').replace(']', '')
+                          const akord = transpose(
+                            t.replace('[', '').replace(']', ''),
+                            transposition
+                          )
                           setChord(akord)
                           setOpenedModal('chord')
                         }
                       }}
                     >
-                      <Text
-                        style={{ ...styles.chordText, fontSize: chordSize }}
-                      >
-                        {t.replace('[', '').replace(']', '')}
+                      <Text style={{ ...styles.chordText, fontSize: chordSize }}>
+                        {transpose(t.replace('[', '').replace(']', ''), transposition)}
                       </Text>
                     </TouchableOpacity>
                   </View>
                 ) : (
                   <View style={styles.wordWrapper}>
-                    <Text style={{ ...styles.wordText, fontSize: textSize }}>
-                      {t}
-                    </Text>
+                    <Text style={{ ...styles.wordText, fontSize: textSize }}>{t}</Text>
                   </View>
                 )
               )}
@@ -204,6 +205,13 @@ const SongDetail = props => {
         onTextSize={() => {
           setOpenedModal('text-size')
         }}
+        transposeUp={() => {
+          setTransposition(prev => (prev === 11 ? 0 : prev + 1))
+        }}
+        transposeDown={() => {
+          setTransposition(prev => (prev === -11 ? 0 : prev - 1))
+        }}
+        transposition={transposition}
       ></SongToolbar>
     </View>
   )
