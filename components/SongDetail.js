@@ -189,7 +189,7 @@ const SongDetail = props => {
                     </TouchableOpacity>
                   </View>
                 ) : (
-                  <View style={styles.wordWrapper}>
+                  <View>
                     <Text style={{ ...styles.wordText, fontSize: textSize }}>{t}</Text>
                   </View>
                 )
@@ -263,7 +263,6 @@ const styles = StyleSheet.create({
     borderWidth: 0
     // fontFamily: 'roboto-mono'
   },
-  wordWrapper: { minHeight: 20, borderWidth: 0 },
   wordText: {
     // fontFamily: 'roboto-mono'
   }
