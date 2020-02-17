@@ -28,6 +28,8 @@ const SongDetail = props => {
   const [isPlaying, setIsPlaying] = useState(false)
   const [openedModal, setOpenedModal] = useState(null)
   const [chord, setChord] = useState(null)
+  const [textSize, setTextSize] = useState(12)
+  const [chordSize, setChordSize] = useState(14)
 
   const scrollArea = useRef(null)
 
@@ -83,7 +85,7 @@ const SongDetail = props => {
     <View style={styles.screen}>
       <Modal
         title={chord}
-        isVisible={openedModal==='chord'}
+        isVisible={openedModal === 'chord'}
         buttons={[
           {
             title: 'OK',
@@ -97,7 +99,7 @@ const SongDetail = props => {
       </Modal>
       <Modal
         title="Text size"
-        isVisible={openedModal==='text-size'}
+        isVisible={openedModal === 'text-size'}
         buttons={[
           {
             title: 'cancel',
@@ -114,19 +116,25 @@ const SongDetail = props => {
           }
         ]}
       >
-        <Text>Font size:</Text>
+        <Text>Font size: {textSize}</Text>
         <Slider
-          minimumValue={1}
-          maximumValue={7}
-          step={1}
-          onValueChange={value => {}}
+          value={textSize}
+          minimumValue={8}
+          maximumValue={32}
+          step={2}
+          onValueChange={value => {
+            setTextSize(value)
+          }}
         ></Slider>
-        <Text style={{ marginTop: 15 }}>Chord size:</Text>
+        <Text style={{ marginTop: 15 }}>Chord size: {chordSize} </Text>
         <Slider
-          minimumValue={1}
-          maximumValue={7}
-          step={1}
-          onValueChange={value => {}}
+          value={chordSize}
+          minimumValue={8}
+          maximumValue={32}
+          step={2}
+          onValueChange={value => {
+            setChordSize(value)
+          }}
         ></Slider>
       </Modal>
       <ScrollView
@@ -155,7 +163,12 @@ const SongDetail = props => {
                 ) : t === '[-]' ? (
                   <View style={styles.newLine}></View>
                 ) : t[0] === '[' ? (
-                  <View style={styles.chordWrapper}>
+                  <View
+                    style={{
+                      ...styles.chordWrapper,
+                      height: chordSize + textSize
+                    }}
+                  >
                     <TouchableOpacity
                       onPress={() => {
                         if (!isPlaying) {
@@ -165,14 +178,18 @@ const SongDetail = props => {
                         }
                       }}
                     >
-                      <Text style={styles.chordText}>
+                      <Text
+                        style={{ ...styles.chordText, fontSize: chordSize }}
+                      >
                         {t.replace('[', '').replace(']', '')}
                       </Text>
                     </TouchableOpacity>
                   </View>
                 ) : (
                   <View style={styles.wordWrapper}>
-                    <Text style={styles.wordText}>{t}</Text>
+                    <Text style={{ ...styles.wordText, fontSize: textSize }}>
+                      {t}
+                    </Text>
                   </View>
                 )
               )}
@@ -184,7 +201,9 @@ const SongDetail = props => {
         show={showToolbar}
         onTogglePlay={togglePlay}
         isPlaying={isPlaying}
-        onTextSize={()=>{setOpenedModal('text-size')}}
+        onTextSize={() => {
+          setOpenedModal('text-size')
+        }}
       ></SongToolbar>
     </View>
   )
@@ -225,13 +244,11 @@ const styles = StyleSheet.create({
   newLineDouble: { height: 20, borderWidth: 0, width: '100%' },
   newLine: { height: 1, borderWidth: 0, width: '100%' },
   chordWrapper: {
-    height: 45,
     borderWidth: 0,
     overflow: 'visible'
     // width: 1
   },
   chordText: {
-    fontSize: 20,
     color: Colors.primary,
     fontWeight: 'bold',
     // width: 50,
@@ -240,7 +257,6 @@ const styles = StyleSheet.create({
   },
   wordWrapper: { minHeight: 20, borderWidth: 0 },
   wordText: {
-    fontSize: 16
     // fontFamily: 'roboto-mono'
   }
 })

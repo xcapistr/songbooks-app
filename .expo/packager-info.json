@@ -1,10 +1,10 @@
 {
   "devToolsPort": 19002,
   "expoServerPort": 19000,
-  "expoServerNgrokUrl": "https://tr-6a4.anonymous.songbooks-app.exp.direct",
-  "packagerNgrokUrl": "https://packager.tr-6a4.anonymous.songbooks-app.exp.direct",
-  "ngrokPid": 1697,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "packagerPort": 19001,
-  "packagerPid": 1684,
+  "packagerPid": 11568,
   "webpackServerPort": null
 }

@@ -12,6 +12,7 @@ const Slider = props => {
       </View>
       <View style={styles.sliderWrapper}>
         <ReactNativeSlider
+          value={props.value}
           minimumValue={props.minimumValue}
           maximumValue={props.maximumValue}
           minimumTrackTintColor={Colors.lighter}
