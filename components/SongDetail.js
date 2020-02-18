@@ -10,6 +10,7 @@ import {
   Animated
 } from 'react-native'
 import { Easing } from 'react-native-reanimated'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 import Modal from './Modal'
 import { GetSong } from '../services/Db'
@@ -18,6 +19,22 @@ import SongToolbar from './SongToolbar'
 import ChordDetail from './ChordDetail'
 import Slider from './Slider'
 import transpose from '../services/Transpose'
+
+const secondsToTime = secs => {
+  let hours = Math.floor(secs / 3600)
+  let minutes = Math.floor((secs - hours * 3600) / 60)
+  let seconds = secs - hours * 3600 - minutes * 60
+  if (hours < 10) {
+    hours = '0' + hours
+  }
+  if (minutes < 10) {
+    minutes = '0' + minutes
+  }
+  if (seconds < 10) {
+    seconds = '0' + seconds
+  }
+  return hours + ':' + minutes + ':' + seconds
+}
 
 const SongDetail = props => {
   const [data, setData] = useState({ id: '', name: '', text: [] })
@@ -31,7 +48,8 @@ const SongDetail = props => {
   const [chord, setChord] = useState(null)
   const [textSize, setTextSize] = useState(12)
   const [chordSize, setChordSize] = useState(14)
-  const [transposition, setTransposition] = useState(2)
+  const [transposition, setTransposition] = useState(0)
+  const [songLength, setSongLength] = useState(180)
 
   const scrollArea = useRef(null)
 
@@ -66,7 +84,7 @@ const SongDetail = props => {
       scrollAnimationPos.setValue(actualScrollPos)
       Animated.timing(scrollAnimationPos, {
         toValue: scrollEnd,
-        duration: distanceFromEnd * 60,
+        duration: songLength * 1000 * (distanceFromEnd / scrollEnd),
         easing: Easing.linear,
         useNativeDriver: true
       }).start(() => setIsPlaying(false))
@@ -104,14 +122,7 @@ const SongDetail = props => {
         isVisible={openedModal === 'text-size'}
         buttons={[
           {
-            title: 'cancel',
-            action: () => {
-              setOpenedModal(null)
-            }
-          },
-          {
             title: 'ok',
-            type: 'primary',
             action: () => {
               setOpenedModal(null)
             }
@@ -127,6 +138,8 @@ const SongDetail = props => {
           onValueChange={value => {
             setTextSize(value)
           }}
+          leftIcon={<Text style={{ fontSize: 8, color: '#999' }}>T</Text>}
+          rightIcon={<Text style={{ fontSize: 32, color: '#999' }}>T</Text>}
         ></Slider>
         <Text style={{ marginTop: 15 }}>Chord size: {chordSize} </Text>
         <Slider
@@ -137,6 +150,33 @@ const SongDetail = props => {
           onValueChange={value => {
             setChordSize(value)
           }}
+          leftIcon={<Text style={{ fontSize: 8, color: '#999' }}>#</Text>}
+          rightIcon={<Text style={{ fontSize: 32, color: '#999' }}>#</Text>}
+        ></Slider>
+      </Modal>
+      <Modal
+        title="Scroll speed"
+        isVisible={openedModal === 'scroll-speed'}
+        buttons={[
+          {
+            title: 'ok',
+            action: () => {
+              setOpenedModal(null)
+            }
+          }
+        ]}
+      >
+        <Text>Song length: {secondsToTime(songLength)}</Text>
+        <Slider
+          value={420 - songLength}
+          minimumValue={0}
+          maximumValue={390}
+          step={1}
+          onValueChange={value => {
+            setSongLength(420 - value)
+          }}
+          leftIcon={<MaterialCommunityIcons name="run" size={30} color="#999" />}
+          rightIcon={<MaterialCommunityIcons name="run-fast" size={30} color="#999" />}
         ></Slider>
       </Modal>
       <ScrollView
@@ -204,6 +244,9 @@ const SongDetail = props => {
         isPlaying={isPlaying}
         onTextSize={() => {
           setOpenedModal('text-size')
+        }}
+        onSpeed={() => {
+          setOpenedModal('scroll-speed')
         }}
         transposeUp={() => {
           setTransposition(prev => (prev === 11 ? 0 : prev + 1))

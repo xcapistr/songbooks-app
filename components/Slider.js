@@ -8,7 +8,7 @@ const Slider = props => {
   return (
     <View style={styles.container}>
       <View style={styles.iconWrapper}>
-        <Text style={styles.leftIcon}>#</Text>
+        {props.leftIcon}
       </View>
       <View style={styles.sliderWrapper}>
         <ReactNativeSlider
@@ -24,7 +24,7 @@ const Slider = props => {
         ></ReactNativeSlider>
       </View>
       <View style={styles.iconWrapper}>
-        <Text style={styles.rightIcon}>#</Text>
+        {props.rightIcon}
       </View>
     </View>
   )
@@ -33,8 +33,6 @@ const Slider = props => {
 const styles = StyleSheet.create({
   container: { flexDirection: 'row', alignItems: 'stretch' },
   iconWrapper: { width: 40, justifyContent: 'center', alignItems: 'center' },
-  leftIcon: { fontSize: 10 },
-  rightIcon: { fontSize: 25 },
   sliderWrapper: { flex: 1 },
   thumb: {
     backgroundColor: 'white',
