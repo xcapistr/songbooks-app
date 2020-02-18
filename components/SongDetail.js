@@ -79,7 +79,8 @@ const SongDetail = props => {
   const togglePlay = () => {
     if (!isPlaying) {
       setIsPlaying(true)
-      const scrollEnd = scrollContentHeight - scrollViewHeight
+      const scrollEnd =
+        scrollContentHeight > scrollViewHeight ? scrollContentHeight - scrollViewHeight : 0
       const distanceFromEnd = scrollEnd - actualScrollPos
       scrollAnimationPos.setValue(actualScrollPos)
       Animated.timing(scrollAnimationPos, {
