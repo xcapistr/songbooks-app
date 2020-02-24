@@ -13,20 +13,11 @@ import { Ionicons } from '@expo/vector-icons'
 import { GetArtist } from '../services/Db'
 import Colors from '../constants/Colors'
 
-const ListHeader = image => (
-  <View>
-    <Image style={styles.image} source={{ uri: image }} resizeMode="cover" />
-    <View style={{ backgroundColor: '#ddd', height: 1 }}></View>
-  </View>
-)
-
 const ItemSeparator = () => (
   <View style={{ backgroundColor: '#ddd', height: 1, marginLeft: 54 }}></View>
 )
 
-const ListFooter = () => (
-  <View style={{ backgroundColor: '#ddd', height: 1 }}></View>
-)
+const ListBorder = () => <View style={{ backgroundColor: '#ddd', height: 1 }}></View>
 
 const ArtistDetail = props => {
   const [data, setData] = useState({ songs: [] })
@@ -56,9 +47,9 @@ const ArtistDetail = props => {
       <FlatList
         contentContainerStyle={{ paddingBottom: 5, paddingTop: 5 }}
         data={data.songs}
-        ListHeaderComponent={ListHeader(data.image)}
+        ListHeaderComponent={ListBorder}
         ItemSeparatorComponent={ItemSeparator}
-        ListFooterComponent={ListFooter}
+        ListFooterComponent={ListBorder}
         renderItem={itemData => (
           <TouchableOpacity
             style={styles.songTouchable}
@@ -100,18 +91,6 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1
   },
-  image: {
-    width: 130,
-    height: 130,
-    alignSelf: 'center',
-    margin: 20,
-    borderRadius: 10,
-    elevation: 4,
-    shadowColor: Colors.darker,
-    shadowOffset: { with: 0, height: 2 },
-    shadowOpacity: 0.26,
-    shadowRadius: 4
-  },
   songTouchable: {
     padding: 10,
     flexDirection: 'row',
@@ -121,9 +100,7 @@ const styles = StyleSheet.create({
   songIcon: {
     width: 34,
     height: 34,
-    borderRadius: 17,
-    // borderWidth: 1,
-    // borderColor: Colors.primary
+    borderRadius: 17
   },
   songInfo: {
     flex: 1,

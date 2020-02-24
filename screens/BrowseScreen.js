@@ -33,7 +33,6 @@ const BrowseScreen = props => {
               <SongCard
                 name={itemData.item.name}
                 artist={itemData.item.artist.name}
-                image={itemData.item.artist.image}
                 action={() => {
                   props.navigation.navigate(
                     'BrowseL2',
@@ -71,7 +70,6 @@ const BrowseScreen = props => {
             return (
               <ArtistCard
                 name={itemData.item.name}
-                image={itemData.item.image}
                 action={() => {
                   props.navigation.navigate(
                     'BrowseL2',

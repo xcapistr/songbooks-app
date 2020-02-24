@@ -90,8 +90,7 @@ export const GetBook = async id => {
         name: songData.name,
         artist: {
           id: songData.artist.id,
-          name: songData.artist.name,
-          image: songData.artist.image
+          name: songData.artist.name
         }
       })
     })
@@ -105,7 +104,7 @@ export const GetArtist = async id => {
   try {
     const artistRef = firestore.collection('artists').doc(id)
     const artist = (await artistRef.get()).data()
-    const result = { name: artist.name, image: artist.image, songs: [] }
+    const result = { name: artist.name, songs: [] }
 
     const songsRef = firestore.collection('songs').where('artist.id', '==', id)
     const songsSnapshot = await songsRef.get()
@@ -151,8 +150,7 @@ export const Search = async q => {
     result.push({
       id: item.id,
       type: 'artist',
-      name: artist.name,
-      image: artist.image
+      name: artist.name
     })
   })
 
@@ -171,8 +169,7 @@ export const Search = async q => {
       text: song.text,
       artist: {
         id: song.artist.id,
-        name: song.artist.name,
-        image: song.artist.image
+        name: song.artist.name
       }
     })
   })
