@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, Image, Text } from 'react-native'
+import { StyleSheet, View, Text } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 
 import Card from '../components/Card'
@@ -13,7 +13,9 @@ const ArtistCard = props => {
       </View>
       <View style={styles.infoWrapper}>
         <Text style={styles.name}>{props.name}</Text>
-        <Text style={styles.lastLine}>34 songs</Text>
+        <View style={styles.badge}>
+          <Text style={styles.badgeText}>34 songs</Text>
+        </View>
       </View>
     </Card>
   )
@@ -22,7 +24,7 @@ const ArtistCard = props => {
 const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   iconWrapper: {
     borderRadius: 25,
@@ -37,6 +39,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     flex: 1,
     justifyContent: 'space-between',
+    alignItems: 'flex-start',
     marginVertical: 2
   },
   name: {
@@ -44,9 +47,15 @@ const styles = StyleSheet.create({
     fontWeight: Platform.OS === 'android' ? '700' : '600',
     color: '#333'
   },
-  lastLine: {
+  badge: {
     marginTop: 3,
-    color: '#333',
+    backgroundColor: Colors.lightest,
+    paddingVertical: 1,
+    paddingHorizontal: 5,
+    borderRadius: 6
+  },
+  badgeText: {
+    color: Colors.primary,
     fontSize: 10
   }
 })

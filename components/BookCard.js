@@ -19,7 +19,12 @@ const BookCard = props => {
       <View style={styles.infoWrapper}>
         <Text style={styles.name}>{props.name}</Text>
         <Text style={styles.author}>by You</Text>
-        <Text style={styles.lastLine}>34 songs | 4.8 ★</Text>
+        <View style={styles.lastLine}>
+          <View style={styles.badge}>
+            <Text style={styles.badgeText}>34 songs</Text>
+          </View>
+          <Text style={styles.stars}> 4.8 ★</Text>
+        </View>
       </View>
     </Card>
   )
@@ -57,7 +62,22 @@ const styles = StyleSheet.create({
   },
   lastLine: {
     marginTop: 3,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center'
+  },
+  stars: {
     color: '#333',
+    fontSize: 10
+  },
+  badge: {
+    backgroundColor: Colors.lightest,
+    paddingVertical: 1,
+    paddingHorizontal: 5,
+    borderRadius: 6
+  },
+  badgeText: {
+    color: Colors.primary,
     fontSize: 10
   }
 })
