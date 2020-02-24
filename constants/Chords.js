@@ -4,8 +4,8 @@ export default {
     schema: 'x30210'
   },
   'C#': {
-    position: 1,
-    schema: 'x30210'
+    position: 4,
+    schema: 'x13331'
   },
   D: {
     position: 1,
