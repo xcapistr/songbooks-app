@@ -1,5 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, Image, Text } from 'react-native'
+import { Ionicons } from '@expo/vector-icons'
 
 import Card from '../components/Card'
 import Colors from '../constants/Colors'
@@ -7,24 +8,12 @@ import Colors from '../constants/Colors'
 const ArtistCard = props => {
   return (
     <Card style={styles.card} action={props.action}>
-      <View style={styles.imageWrapper}>
-        <Image
-          style={styles.image}
-          source={{
-            uri: props.image
-          }}
-          resizeMode="cover"
-        />
+      <View style={styles.iconWrapper}>
+        <Ionicons name="ios-person" size={25} color={Colors.primary} />
       </View>
       <View style={styles.infoWrapper}>
-        <View>
-          <Text style={styles.name}>{props.name}</Text>
-          <Text style={styles.author}></Text>
-        </View>
-        <View style={styles.lastLine}>
-          <Text style={styles.type}>artist</Text>
-          <Text style={styles.songsCount}>26 songs</Text>
-        </View>
+        <Text style={styles.name}>{props.name}</Text>
+        <Text style={styles.lastLine}>34 songs</Text>
       </View>
     </Card>
   )
@@ -32,19 +21,20 @@ const ArtistCard = props => {
 
 const styles = StyleSheet.create({
   card: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    alignItems: 'center'
   },
-  imageWrapper: {
-    borderRadius: 5,
-    overflow: 'hidden'
-  },
-  image: {
-    width: 70,
-    height: 70,
-    opacity: 0.9
+  iconWrapper: {
+    borderRadius: 25,
+    width: 40,
+    height: 40,
+    backgroundColor: Colors.lightest,
+    marginHorizontal: 10,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   infoWrapper: {
-    marginLeft: 15,
+    marginLeft: 10,
     flex: 1,
     justifyContent: 'space-between',
     marginVertical: 2
@@ -54,25 +44,10 @@ const styles = StyleSheet.create({
     fontWeight: Platform.OS === 'android' ? '700' : '600',
     color: '#333'
   },
-  songsCount: {
-    fontSize: 14,
-    color: '#777',
-    marginTop: Platform.OS === 'android' ? 0 : 3
-  },
   lastLine: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end'
-  },
-  type: {
-    textTransform: 'uppercase',
-    fontSize: 10,
-    color: Colors.primary,
-    fontWeight: 'bold'
-  },
-  songsCount: {
-    fontSize: 11,
-    color: '#333'
+    marginTop: 3,
+    color: '#333',
+    fontSize: 10
   }
 })
 

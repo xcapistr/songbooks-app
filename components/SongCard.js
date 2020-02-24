@@ -1,38 +1,21 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, Image, View, Platform } from 'react-native'
+import { Ionicons } from '@expo/vector-icons'
 
 import Card from './Card'
 import Colors from '../constants/Colors'
 
 const SongCard = props => {
-  return props.mini ? (
-    <Card style={styles.cardMini} action={props.action}>
-      <Text style={styles.name}>{props.name}</Text>
-      <Text style={styles.reviews}>
-        40K <Text style={styles.stars}>★★★★☆</Text>
-      </Text>
-    </Card>
-  ) : (
+  return (
     <Card style={styles.card} action={props.action}>
-      <View style={styles.imageWrapper}>
-        <Image
-          style={styles.image}
-          source={{
-            uri: props.image
-          }}
-          resizeMode="cover"
-        />
+      <View style={styles.iconWrapper}>
+        <Ionicons name="ios-musical-notes" size={20} color={Colors.primary} />
       </View>
       <View style={styles.infoWrapper}>
         <View>
           <Text style={styles.name}>{props.name}</Text>
-          <Text style={styles.artist}>{props.artist}</Text>
-        </View>
-        <View style={styles.lastLine}>
-          <Text style={styles.type}>song</Text>
-          <Text style={styles.reviews}>
-            40K <Text style={styles.stars}>★★★★☆</Text>
-          </Text>
+          <Text style={styles.artist}>by {props.artist}</Text>
+          <Text style={styles.lastLine}>4.8 ★</Text>
         </View>
       </View>
     </Card>
@@ -41,24 +24,20 @@ const SongCard = props => {
 
 const styles = StyleSheet.create({
   card: {
-    flexDirection: 'row'
-  },
-  cardMini: {
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between'
+    alignItems: 'center'
   },
-  imageWrapper: {
-    borderRadius: 5,
-    overflow: 'hidden'
-  },
-  image: {
-    width: 70,
-    height: 70,
-    opacity: 0.9
+  iconWrapper: {
+    borderRadius: 25,
+    width: 40,
+    height: 40,
+    backgroundColor: Colors.lightest,
+    marginHorizontal: 10,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   infoWrapper: {
-    marginLeft: 15,
+    marginLeft: 10,
     flex: 1,
     justifyContent: 'space-between',
     marginVertical: 2
@@ -70,26 +49,12 @@ const styles = StyleSheet.create({
   },
   artist: {
     fontSize: 14,
-    color: '#777',
-    marginTop: Platform.OS === 'android' ? 0 : 3
+    color: '#777'
   },
   lastLine: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end'
-  },
-  type: {
-    textTransform: 'uppercase',
-    fontSize: 10,
-    color: Colors.primary,
-    fontWeight: 'bold'
-  },
-  reviews: {
-    fontSize: 11,
-    color: '#333'
-  },
-  stars: {
-    fontSize: Platform.OS === 'android' ? 14 : 12
+    marginTop: 3,
+    color: '#333',
+    fontSize: 10
   }
 })
 

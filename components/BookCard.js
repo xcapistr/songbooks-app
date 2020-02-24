@@ -17,16 +17,9 @@ const BookCard = props => {
         />
       </View>
       <View style={styles.infoWrapper}>
-        <View>
-          <Text style={styles.name}>{props.name}</Text>
-          <Text style={styles.author}>by You</Text>
-        </View>
-        <View style={styles.lastLine}>
-          <Text style={styles.type}>songbook</Text>
-          <Text style={styles.songsCount}>
-            2 songs
-          </Text>
-        </View>
+        <Text style={styles.name}>{props.name}</Text>
+        <Text style={styles.author}>by You</Text>
+        <Text style={styles.lastLine}>34 songs | 4.8 ★</Text>
       </View>
     </Card>
   )
@@ -34,19 +27,21 @@ const BookCard = props => {
 
 const styles = StyleSheet.create({
   card: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   imageWrapper: {
-    borderRadius: 5,
-    overflow: 'hidden'
+    borderRadius: 10,
+    overflow: 'hidden',
+    marginRight: 13,
+    marginLeft: 2
   },
   image: {
-    width: 70,
-    height: 70,
+    width: 55,
+    height: 55,
     opacity: 0.9
   },
   infoWrapper: {
-    marginLeft: 15,
     flex: 1,
     justifyContent: 'space-between',
     marginVertical: 2
@@ -58,23 +53,12 @@ const styles = StyleSheet.create({
   },
   author: {
     fontSize: 14,
-    color: '#777',
-    marginTop: Platform.OS === 'android' ? 0 : 3
+    color: '#777'
   },
   lastLine: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end'
-  },
-  type: {
-    textTransform: 'uppercase',
-    fontSize: 10,
-    color: Colors.primary,
-    fontWeight: 'bold'
-  },
-  songsCount: {
-    fontSize: 11,
-    color: '#333'
+    marginTop: 3,
+    color: '#333',
+    fontSize: 10
   }
 })
 
