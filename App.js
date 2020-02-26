@@ -2,6 +2,17 @@ import React, { useState } from 'react'
 import { StyleSheet } from 'react-native'
 import * as Font from 'expo-font'
 import { AppLoading } from 'expo'
+import { createStore, combineReducers, applyMiddleware } from 'redux'
+import { Provider } from 'react-redux'
+import ReduxThunk from 'redux-thunk'
+
+import userLibraryReducer from './store/reducers/userLibrary'
+
+const rootReducer = combineReducers({
+  userLibrary: userLibraryReducer
+})
+
+const store = createStore(rootReducer, applyMiddleware(ReduxThunk))
 
 const fetchFonts = () => {
   return Font.loadAsync({
@@ -26,7 +37,11 @@ export default function App() {
     )
   }
 
-  return <MainNavigator />
+  return (
+    <Provider store={store}>
+      <MainNavigator />
+    </Provider>
+  )
 }
 
 const styles = StyleSheet.create({

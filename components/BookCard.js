@@ -21,7 +21,7 @@ const BookCard = props => {
         <Text style={styles.author}>by You</Text>
         <View style={styles.lastLine}>
           <View style={styles.badge}>
-            <Text style={styles.badgeText}>34 songs</Text>
+            <Text style={styles.badgeText}>{props.songsCount || '0'} songs</Text>
           </View>
           <Text style={styles.stars}> 4.8 ★</Text>
         </View>

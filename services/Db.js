@@ -53,16 +53,14 @@ export const GetSong = async id => {
 
 export const GetBooks = async () => {
   const result = []
-  try {
-    const songsRef = firestore.collection('songbooks')
-    const querySnapshot = await songsRef.get()
-    querySnapshot.forEach(item => {
-      const book = item.data()
-      result.push({ id: item.id, name: book.name, image: book.image })
-    })
-  } catch (error) {
-    console.log('ERROR:', error)
-  }
+  const booksRef = firestore.collection('songbooks')
+  const querySnapshot = await booksRef.get()
+  querySnapshot.forEach(item => {
+    const book = item.data()
+    result.push({ id: item.id, name: book.name, songIds: book.songs, image: book.image })
+  })
+  console.log('RESULTS:', result)
+
   return result
 }
 

@@ -1,31 +1,29 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { StyleSheet, View, FlatList } from 'react-native'
+import { useSelector, useDispatch } from 'react-redux'
 
 import Colors from '../constants/Colors'
 import BookCard from '../components/BookCard'
-import { GetBooks } from '../services/Db'
+import * as userLibraryActions from '../store/actions/userLibrary'
 
 const HomeScreen = props => {
-  const [data, setData] = useState([])
-
-  const reload = async () => {
-    const books = await GetBooks()
-    setData(books)
-  }
+  const books = useSelector(state => state.userLibrary.userBooks)
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    reload()
-  }, [])
+    dispatch(userLibraryActions.fetchBooks())
+  }, [dispatch])
 
   return (
     <View style={styles.screen}>
       <FlatList
         contentContainerStyle={{ paddingBottom: 5, paddingTop: 5 }}
-        data={data}
+        data={books}
         renderItem={itemData => (
           <BookCard
             name={itemData.item.name}
             image={itemData.item.image}
+            songsCount={itemData.item.songIds.length}
             action={() =>
               props.navigation.navigate(
                 'HomeL2',
