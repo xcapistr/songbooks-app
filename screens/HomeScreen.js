@@ -18,22 +18,22 @@ const HomeScreen = props => {
     <View style={styles.screen}>
       <FlatList
         contentContainerStyle={{ paddingBottom: 5, paddingTop: 5 }}
-        data={books}
-        renderItem={itemData => (
+        data={Object.keys(books)}
+        renderItem={({item}) => (
           <BookCard
-            name={itemData.item.name}
-            image={itemData.item.image}
-            songsCount={itemData.item.songIds.length}
+            name={books[item].name}
+            image={books[item].image}
+            songsCount={books[item].songIds.length}
             action={() =>
               props.navigation.navigate(
                 'HomeL2',
                 {
                   type: 'book',
-                  id: itemData.item.id,
-                  name: itemData.item.name,
+                  id: books[item].id,
+                  name: books[item].name,
                   root: 'Home'
                 },
-                itemData.item.name
+                books[item].name
               )
             }
           />

@@ -52,12 +52,12 @@ export const GetSong = async id => {
 }
 
 export const GetBooks = async () => {
-  const result = []
+  const result = {}
   const booksRef = firestore.collection('songbooks')
   const querySnapshot = await booksRef.get()
   querySnapshot.forEach(item => {
     const book = item.data()
-    result.push({ id: item.id, name: book.name, songIds: book.songs, image: book.image })
+    result[item.id] = { id: item.id, name: book.name, songIds: book.songs, image: book.image }
   })
   console.log('RESULTS:', result)
 

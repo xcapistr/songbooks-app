@@ -1,7 +1,7 @@
 import { SET_BOOKS } from '../actions/userLibrary'
 
 const initialState = {
-  userBooks: []
+  userBooks: {}
 }
 
 export default (state = initialState, action) => {

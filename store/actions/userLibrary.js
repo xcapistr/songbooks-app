@@ -1,4 +1,4 @@
-import { GetBooks, GetBook } from '../../services/Db'
+import { GetBooks } from '../../services/Db'
 
 export const SET_BOOKS = 'SET_BOOKS'
 
