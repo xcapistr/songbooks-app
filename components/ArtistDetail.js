@@ -60,8 +60,7 @@ const ArtistDetail = props => {
                   type: 'song',
                   id: itemData.item.id,
                   name: itemData.item.name
-                },
-                itemData.item.name
+                }
               )
             }}
           >

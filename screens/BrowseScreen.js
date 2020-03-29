@@ -1,19 +1,24 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { StyleSheet, View, FlatList } from 'react-native'
+import { useSelector, useDispatch } from 'react-redux'
 
 import Colors from '../constants/Colors'
 import SongCard from '../components/SongCard'
 import BookCard from '../components/BookCard'
 import ArtistCard from '../components/ArtistCard'
 import SearchHeader from '../components/SearchHeader'
-import { Search } from '../services/Db'
+import * as browseActions from '../store/actions/browse'
 
 const BrowseScreen = props => {
-  const [data, setData] = useState([])
+  const results = useSelector(state => ({
+    ...state.browse.books,
+    ...state.browse.artists,
+    ...state.browse.songs
+  }))
+  const dispatch = useDispatch()
 
-  const search = async q => {
-    const all = await Search(q)
-    setData(all)
+  const search = async query => {
+    dispatch(browseActions.fetchResults(query))
   }
 
   useEffect(() => {
@@ -26,67 +31,56 @@ const BrowseScreen = props => {
     <View style={styles.screen}>
       <FlatList
         contentContainerStyle={{ paddingBottom: 5, paddingTop: 5 }}
-        data={data}
-        renderItem={itemData => {
-          if (itemData.item.type === 'song') {
+        data={Object.keys(results)}
+        renderItem={({ item }) => {
+          if (results[item].type === 'song') {
             return (
               <SongCard
-                name={itemData.item.name}
-                artist={itemData.item.artist.name}
+                name={results[item].name}
+                artist={results[item].artist}
                 action={() => {
-                  props.navigation.navigate(
-                    'BrowseL2',
-                    {
-                      type: 'song',
-                      id: itemData.item.id,
-                      name: itemData.item.name,
-                      root: 'Browse'
-                    },
-                    itemData.item.name
-                  )
+                  props.navigation.navigate('BrowseL2', {
+                    type: 'song',
+                    id: item,
+                    name: results[item].name,
+                    root: 'Browse'
+                  })
                 }}
               />
             )
-          } else if (itemData.item.type === 'book') {
+          } else if (results[item].type === 'book') {
             return (
               <BookCard
-                name={itemData.item.name}
-                image={itemData.item.image}
+                name={results[item].name}
+                image={results[item].image}
+                songsCount={results[item].songIds.length}
                 action={() => {
-                  props.navigation.navigate(
-                    'BrowseL2',
-                    {
-                      type: 'book',
-                      id: itemData.item.id,
-                      name: itemData.item.name,
-                      root: 'Browse'
-                    },
-                    itemData.item.name
-                  )
+                  props.navigation.navigate('BrowseL2', {
+                    type: 'book',
+                    id: item,
+                    name: results[item].name,
+                    root: 'Browse'
+                  })
                 }}
               />
             )
           } else {
             return (
               <ArtistCard
-                name={itemData.item.name}
+                name={results[item].name}
                 action={() => {
-                  props.navigation.navigate(
-                    'BrowseL2',
-                    {
-                      type: 'artist',
-                      id: itemData.item.id,
-                      name: itemData.item.name,
-                      root: 'Browse'
-                    },
-                    itemData.item.name
-                  )
+                  props.navigation.navigate('BrowseL2', {
+                    type: 'artist',
+                    id: item,
+                    name: results[item].name,
+                    root: 'Browse'
+                  })
                 }}
               />
             )
           }
         }}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item}
       ></FlatList>
     </View>
   )
@@ -94,11 +88,7 @@ const BrowseScreen = props => {
 
 BrowseScreen.navigationOptions = navigationData => {
   return {
-    headerTitle: (
-      <SearchHeader
-        onSearch={navigationData.navigation.getParam('handleSearch')}
-      />
-    ),
+    headerTitle: <SearchHeader onSearch={navigationData.navigation.getParam('handleSearch')} />,
     headerStyle: {
       backgroundColor: 'white'
     },

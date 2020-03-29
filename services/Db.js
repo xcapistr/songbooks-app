@@ -57,10 +57,23 @@ export const GetBooks = async () => {
   const querySnapshot = await booksRef.get()
   querySnapshot.forEach(item => {
     const book = item.data()
-    result[item.id] = { id: item.id, name: book.name, songIds: book.songs, image: book.image }
+    result[item.id] = { id: item.id, name: book.name, songIds: book.songs, songs: [], image: book.image }
   })
   console.log('RESULTS:', result)
+  return result
+}
 
+export const GetSongsByIds = async songIds => {
+  const result = {}
+  const songsRef = firestore
+    .collection('songs')
+    .where(firebase.firestore.FieldPath.documentId(), 'in', songIds)
+  const querySnapshot = await songsRef.get()
+  querySnapshot.forEach(item => {
+    const song = item.data()
+    result[item.id] = { id: item.id, name: song.name, artist: song.artist, text: song.text }
+  })
+  console.log('RESULTS:', result)
   return result
 }
 
@@ -121,7 +134,11 @@ export const GetArtist = async id => {
 
 export const Search = async q => {
   const query = q.toLowerCase()
-  const result = []
+  const result = {
+    books: {},
+    artists: {},
+    songs: {}
+  }
 
   // search in songbooks
   const songbooks = await firestore
@@ -130,12 +147,14 @@ export const Search = async q => {
     .get()
   songbooks.forEach(item => {
     const book = item.data()
-    result.push({
+    result.books[item.id] = {
       id: item.id,
       type: 'book',
       name: book.name,
-      image: book.image
-    })
+      image: book.image,
+      songIds: book.songs,
+      songs: {}
+    }
   })
 
   //search in artists
@@ -145,11 +164,11 @@ export const Search = async q => {
     .get()
   artists.forEach(item => {
     const artist = item.data()
-    result.push({
+    result.artists[item.id] = {
       id: item.id,
       type: 'artist',
       name: artist.name
-    })
+    }
   })
 
   //search in songs
@@ -160,16 +179,13 @@ export const Search = async q => {
 
   songs.forEach(item => {
     const song = item.data()
-    result.push({
+    result.songs[item.id] = {
       id: item.id,
       type: 'song',
       name: song.name,
       text: song.text,
-      artist: {
-        id: song.artist.id,
-        name: song.artist.name
-      }
-    })
+      artist: song.artist.name
+    }
   })
   return result
 }

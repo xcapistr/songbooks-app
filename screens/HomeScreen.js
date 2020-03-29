@@ -4,14 +4,14 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import Colors from '../constants/Colors'
 import BookCard from '../components/BookCard'
-import * as userLibraryActions from '../store/actions/userLibrary'
+import * as userActions from '../store/actions/user'
 
 const HomeScreen = props => {
-  const books = useSelector(state => state.userLibrary.userBooks)
+  const books = useSelector(state => state.user.books)
   const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(userLibraryActions.fetchBooks())
+    dispatch(userActions.fetchBooks())
   }, [dispatch])
 
   return (
@@ -29,16 +29,15 @@ const HomeScreen = props => {
                 'HomeL2',
                 {
                   type: 'book',
-                  id: books[item].id,
+                  id: item,
                   name: books[item].name,
                   root: 'Home'
-                },
-                books[item].name
+                }
               )
             }
           />
         )}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item}
       ></FlatList>
     </View>
   )

@@ -6,10 +6,12 @@ import { createStore, combineReducers, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import ReduxThunk from 'redux-thunk'
 
-import userLibraryReducer from './store/reducers/userLibrary'
+import userReducer from './store/reducers/user'
+import browseReducer from './store/reducers/browse'
 
 const rootReducer = combineReducers({
-  userLibrary: userLibraryReducer
+  user: userReducer,
+  browse: browseReducer
 })
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk))

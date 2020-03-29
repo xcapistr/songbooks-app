@@ -5,7 +5,14 @@ import SongDetail from '../components/SongDetail'
 import Colors from '../constants/Colors'
 
 const BrowseL3Screen = props => {
-  return <SongDetail id={props.navigation.getParam('id')} />
+  return (
+    <SongDetail
+      id={props.navigation.getParam('id')}
+      name={props.navigation.getParam('name')}
+      artist={props.navigation.getParam('artist')}
+      text={props.navigation.getParam('text')}
+    />
+  )
 }
 
 BrowseL3Screen.navigationOptions = navigationData => {

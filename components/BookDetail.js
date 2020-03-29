@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import {
   StyleSheet,
   View,
@@ -6,12 +6,14 @@ import {
   Image,
   TouchableOpacity,
   Text,
-  ActivityIndicator
+  // ActivityIndicator
 } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
+import { useSelector, useDispatch } from 'react-redux'
 
-import { GetBook } from '../services/Db'
 import * as Colors from '../constants/Colors'
+import * as userActions from '../store/actions/user'
+import * as browseActions from '../store/actions/browse'
 
 const ListHeader = image => (
   <View>
@@ -24,59 +26,63 @@ const ItemSeparator = () => (
   <View style={{ backgroundColor: '#ddd', height: 1, marginLeft: 20 }}></View>
 )
 
-const ListFooter = () => (
-  <View style={{ backgroundColor: '#ddd', height: 1 }}></View>
-)
+const ListFooter = () => <View style={{ backgroundColor: '#ddd', height: 1 }}></View>
 
 const BookDetail = props => {
-  const [data, setData] = useState({})
-  const [isLoading, setIsLoading] = useState(false)
+  // const [isLoading, setIsLoading] = useState(false)
 
-  const reload = async () => {
-    setIsLoading(true)
-    const book = await GetBook(props.navigation.getParam('id'))
-    setData(book)
-    setIsLoading(false)
-  }
+  const songs = useSelector(state =>
+    props.navigation.getParam('root') === 'Home'
+      ? state.user.books[props.navigation.getParam('id')].songs
+      : state.browse.books[props.navigation.getParam('id')].songs
+  )
+  const image = useSelector(state =>
+    props.navigation.getParam('root') === 'Home'
+      ? state.user.books[props.navigation.getParam('id')].image
+      : state.browse.books[props.navigation.getParam('id')].image
+  )
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    reload()
-  }, [])
-
-  if (isLoading) {
-    return (
-      <View style={styles.centered}>
-        <ActivityIndicator size="large" color={Colors.primary} />
-      </View>
+    dispatch(
+      props.navigation.getParam('root') === 'Home'
+        ? userActions.fetchBookSongs(props.navigation.getParam('id'))
+        : browseActions.fetchBookSongs(props.navigation.getParam('id'))
     )
-  }
+  }, [dispatch])
+
+  // if (isLoading) {
+  //   return (
+  //     <View style={styles.centered}>
+  //       <ActivityIndicator size="large" color={Colors.primary} />
+  //     </View>
+  //   )
+  // }
 
   return (
     <View style={styles.screen}>
       <FlatList
         contentContainerStyle={{ paddingBottom: 5, paddingTop: 5 }}
-        ListHeaderComponent={ListHeader(data.image)}
+        ListHeaderComponent={ListHeader(image)}
         ItemSeparatorComponent={ItemSeparator}
         ListFooterComponent={ListFooter}
-        data={data.songs}
-        renderItem={itemData => (
+        data={Object.keys(songs)}
+        renderItem={({ item }) => (
           <TouchableOpacity
             style={styles.songTouchable}
             onPress={() => {
-              props.navigation.navigate(
-                props.navigation.getParam('root') + 'L3',
-                {
-                  type: 'song',
-                  id: itemData.item.id,
-                  name: itemData.item.name
-                },
-                itemData.item.name
-              )
+              props.navigation.navigate(props.navigation.getParam('root') + 'L3', {
+                type: 'song',
+                id: songs[item].id,
+                name: songs[item].name,
+                artist: songs[item].artist,
+                text: songs[item.text]
+              })
             }}
           >
             <View style={styles.songInfo}>
-              <Text style={styles.songName}>{itemData.item.name}</Text>
-              <Text style={styles.songArtist}>{itemData.item.artist.name}</Text>
+              <Text style={styles.songName}>{songs[item].name}</Text>
+              <Text style={styles.songArtist}>{songs[item].artist.name}</Text>
             </View>
             <Ionicons name="ios-arrow-forward" size={25} color="#ccc" />
           </TouchableOpacity>
