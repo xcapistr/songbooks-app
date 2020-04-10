@@ -73,10 +73,10 @@ const BookDetail = props => {
             onPress={() => {
               props.navigation.navigate(props.navigation.getParam('root') + 'L3', {
                 type: 'song',
-                id: songs[item].id,
+                songId: songs[item].id,
+                bookId: props.navigation.getParam('id'),
                 name: songs[item].name,
-                artist: songs[item].artist,
-                text: songs[item.text]
+                root: props.navigation.getParam('root')
               })
             }}
           >

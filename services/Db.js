@@ -71,7 +71,7 @@ export const GetSongsByIds = async songIds => {
   const querySnapshot = await songsRef.get()
   querySnapshot.forEach(item => {
     const song = item.data()
-    result[item.id] = { id: item.id, name: song.name, artist: song.artist, text: song.text }
+    result[item.id] = { id: item.id, name: song.name, artist: song.artist.name, text: song.text }
   })
   console.log('RESULTS:', result)
   return result

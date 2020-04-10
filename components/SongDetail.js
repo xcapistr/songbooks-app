@@ -11,9 +11,10 @@ import {
 } from 'react-native'
 import { Easing } from 'react-native-reanimated'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { useSelector } from 'react-redux'
 
 import Modal from './Modal'
-import { GetSong } from '../services/Db'
+import textTransform from '../services/textTransform'
 import Colors from '../constants/Colors'
 import SongToolbar from './SongToolbar'
 import ChordDetail from './ChordDetail'
@@ -37,8 +38,25 @@ const secondsToTime = secs => {
 }
 
 const SongDetail = props => {
-  const [data, setData] = useState({ id: '', name: '', text: [] })
-  const [isLoading, setIsLoading] = useState(false)
+  // TODO: prevent unnecessary calling
+  const song = useSelector(state =>
+    {
+      console.log('get song data...')
+    return props.navigation.getParam('root') === 'Home'
+      ? state.user.books[props.navigation.getParam('bookId')].songs[
+          props.navigation.getParam('songId')
+        ]
+      : props.navigation.getParam('bookId')
+      ? state.browse.books[props.navigation.getParam('bookId')].songs[
+          props.navigation.getParam('songId')
+        ]
+      : state.browse.songs[props.navigation.getParam('songId')]
+    }
+  )
+    console.log('SONGGGG', props.navigation.getParam('bookId'), song)
+  const transformedText = textTransform(song.text)
+
+  // const [isLoading, setIsLoading] = useState(false)
   const [showToolbar, setShowToolbar] = useState(false)
   const [scrollContentHeight, setScrollContentHeight] = useState(0)
   const [scrollViewHeight, setScrollViewHeight] = useState(0)
@@ -61,16 +79,16 @@ const SongDetail = props => {
 
   const [scrollAnimationPos] = useState(scrollAnimatedValue)
 
-  const reload = async () => {
-    setIsLoading(true)
-    const song = await GetSong(props.id)
-    setData({ ...song, text: song.text })
-    setIsLoading(false)
-  }
+  // const reload = async () => {
+  //   setIsLoading(true)
+  //   const song = await GetSong(props.id)
+  //   setData({ ...song, text: song.text })
+  //   setIsLoading(false)
+  // }
 
-  useEffect(() => {
-    reload()
-  }, [])
+  // useEffect(() => {
+  //   reload()
+  // }, [])
 
   const toggleToolbar = () => {
     setShowToolbar(prevState => !prevState)
@@ -94,13 +112,13 @@ const SongDetail = props => {
     }
   }
 
-  if (isLoading) {
-    return (
-      <View style={styles.centered}>
-        <ActivityIndicator size="large" color={Colors.primary} />
-      </View>
-    )
-  }
+  // if (isLoading) {
+  //   return (
+  //     <View style={styles.centered}>
+  //       <ActivityIndicator size="large" color={Colors.primary} />
+  //     </View>
+  //   )
+  // }
 
   return (
     <View style={styles.screen}>
@@ -197,10 +215,10 @@ const SongDetail = props => {
       >
         <TouchableWithoutFeedback onPress={toggleToolbar}>
           <View>
-            <Text style={styles.title}>{data.name}</Text>
-            <Text style={styles.artist}>by {data.artist}</Text>
+            <Text style={styles.title}>{song.name}</Text>
+            <Text style={styles.artist}>by {song.artist}</Text>
             <View style={styles.textWrapper}>
-              {data.text.map((t, i) =>
+              {transformedText.map((t, i) =>
                 t === '[--]' ? (
                   <View style={styles.newLineDouble}></View>
                 ) : t === '[-]' ? (

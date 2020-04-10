@@ -9,17 +9,11 @@ import Colors from '../constants/Colors'
 const BrowseL2Screen = props => {
   const content =
     props.navigation.getParam('type') === 'song' ? (
-      <SongDetail id={props.navigation.getParam('id')} />
+      <SongDetail navigation={props.navigation} />
     ) : props.navigation.getParam('type') === 'book' ? (
-      <BookDetail
-        id={props.navigation.getParam('id')}
-        navigation={props.navigation}
-      />
+      <BookDetail id={props.navigation.getParam('id')} navigation={props.navigation} />
     ) : props.navigation.getParam('type') === 'artist' ? (
-      <ArtistDetail
-        id={props.navigation.getParam('id')}
-        navigation={props.navigation}
-      />
+      <ArtistDetail id={props.navigation.getParam('id')} navigation={props.navigation} />
     ) : null
 
   return content

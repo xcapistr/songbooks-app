@@ -41,7 +41,7 @@ const BrowseScreen = props => {
                 action={() => {
                   props.navigation.navigate('BrowseL2', {
                     type: 'song',
-                    id: item,
+                    songId: item,
                     name: results[item].name,
                     root: 'Browse'
                   })
