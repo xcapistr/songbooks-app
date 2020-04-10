@@ -9,68 +9,46 @@ import {
   ActivityIndicator
 } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
+import { useSelector, useDispatch } from 'react-redux'
 
-import { GetArtist } from '../services/Db'
-import Colors from '../constants/Colors'
+import * as browseActions from '../store/actions/browse'
 
 const ItemSeparator = () => (
-  <View style={{ backgroundColor: '#ddd', height: 1, marginLeft: 54 }}></View>
+  <View style={{ backgroundColor: '#ddd', height: 1, marginLeft: 20 }}></View>
 )
 
-const ListBorder = () => <View style={{ backgroundColor: '#ddd', height: 1 }}></View>
+const ListFooter = () => <View style={{ backgroundColor: '#ddd', height: 1 }}></View>
 
 const ArtistDetail = props => {
-  const [data, setData] = useState({ songs: [] })
-  const [isLoading, setIsLoading] = useState(false)
-
-  const reload = async () => {
-    setIsLoading(true)
-    const artist = await GetArtist(props.navigation.getParam('id'))
-    setData(artist)
-    setIsLoading(false)
-  }
+  const songs = useSelector(state => state.browse.artists[props.navigation.getParam('id')].songs)
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    reload()
-  }, [])
-
-  if (isLoading) {
-    return (
-      <View style={styles.centered}>
-        <ActivityIndicator size="large" color={Colors.primary} />
-      </View>
-    )
-  }
+    dispatch(browseActions.fetchArtistSongs(props.navigation.getParam('id')))
+  }, [dispatch])
 
   return (
     <View style={styles.screen}>
       <FlatList
         contentContainerStyle={{ paddingBottom: 5, paddingTop: 5 }}
-        data={data.songs}
-        ListHeaderComponent={ListBorder}
         ItemSeparatorComponent={ItemSeparator}
-        ListFooterComponent={ListBorder}
-        renderItem={itemData => (
+        ListFooterComponent={ListFooter}
+        data={Object.keys(songs)}
+        renderItem={({ item }) => (
           <TouchableOpacity
             style={styles.songTouchable}
             onPress={() => {
-              props.navigation.navigate(
-                props.navigation.getParam('root') + 'L3',
-                {
-                  type: 'song',
-                  id: itemData.item.id,
-                  name: itemData.item.name
-                }
-              )
+              props.navigation.navigate(props.navigation.getParam('root') + 'L3', {
+                type: 'song',
+                songId: songs[item].id,
+                artistId: props.navigation.getParam('id'),
+                name: songs[item].name,
+                root: props.navigation.getParam('root')
+              })
             }}
           >
-            <Image
-              style={styles.songIcon}
-              source={require('../assets/img/chord-icon.png')}
-              resizeMode="cover"
-            />
             <View style={styles.songInfo}>
-              <Text style={styles.songName}>{itemData.item.name}</Text>
+              <Text style={styles.songName}>{songs[item].name}</Text>
             </View>
             <Ionicons name="ios-arrow-forward" size={25} color="#ccc" />
           </TouchableOpacity>
@@ -91,15 +69,12 @@ const styles = StyleSheet.create({
     flex: 1
   },
   songTouchable: {
-    padding: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  songIcon: {
-    width: 34,
-    height: 34,
-    borderRadius: 17
+    alignItems: 'center',
+    height: 50
   },
   songInfo: {
     flex: 1,
@@ -109,7 +84,7 @@ const styles = StyleSheet.create({
   songName: {
     fontSize: 18,
     color: '#333'
-  }
+  },
 })
 
 export default ArtistDetail

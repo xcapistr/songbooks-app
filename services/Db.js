@@ -59,7 +59,6 @@ export const GetBooks = async () => {
     const book = item.data()
     result[item.id] = { id: item.id, name: book.name, songIds: book.songs, songs: [], image: book.image }
   })
-  console.log('RESULTS:', result)
   return result
 }
 
@@ -73,58 +72,21 @@ export const GetSongsByIds = async songIds => {
     const song = item.data()
     result[item.id] = { id: item.id, name: song.name, artist: song.artist.name, text: song.text }
   })
-  console.log('RESULTS:', result)
   return result
 }
 
-export const GetBook = async id => {
+export const GetArtistSongs = async artistId => {
   try {
-    // get book
-    const bookRef = firestore.collection('songbooks').doc(id)
-    const bookData = (await bookRef.get()).data()
-    const songIds = bookData.songs
-    const book = {
-      name: bookData.name,
-      image: bookData.image,
-      songs: []
-    }
-
-    //get songs
-    const songsRef = firestore
-      .collection('songs')
-      .where(firebase.firestore.FieldPath.documentId(), 'in', songIds)
-    const songsSnapshot = await songsRef.get()
-    songsSnapshot.forEach(item => {
-      const songData = item.data()
-      book.songs.push({
-        id: item.id,
-        name: songData.name,
-        artist: {
-          id: songData.artist.id,
-          name: songData.artist.name
-        }
-      })
-    })
-    return book
-  } catch (error) {
-    console.log('ERROR:', error)
-  }
-}
-
-export const GetArtist = async id => {
-  try {
-    const artistRef = firestore.collection('artists').doc(id)
-    const artist = (await artistRef.get()).data()
-    const result = { name: artist.name, songs: [] }
-
-    const songsRef = firestore.collection('songs').where('artist.id', '==', id)
+    const result = {}
+    const songsRef = firestore.collection('songs').where('artist.id', '==', artistId)
     const songsSnapshot = await songsRef.get()
     songsSnapshot.forEach(item => {
       const song = item.data()
-      result.songs.push({
+      result[item.id] = {
         id: item.id,
-        name: song.name
-      })
+        name: song.name,
+        text: song.text
+      }
     })
     return result
   } catch (error) {
@@ -167,7 +129,8 @@ export const Search = async q => {
     result.artists[item.id] = {
       id: item.id,
       type: 'artist',
-      name: artist.name
+      name: artist.name,
+      songs: {}
     }
   })
 

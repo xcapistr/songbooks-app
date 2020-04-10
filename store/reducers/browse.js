@@ -1,4 +1,4 @@
-import { SET_BROWSE_RESULTS, SET_BROWSE_BOOK_SONGS } from '../actions/browse'
+import { SET_BROWSE_RESULTS, SET_BROWSE_BOOK_SONGS, SET_BROWSE_ARTIST_SONGS } from '../actions/browse'
 
 const initialState = {
   books: {},
@@ -19,6 +19,13 @@ export default (state = initialState, action) => {
       return {
         ...state,
         books: updatedBooks
+      }
+    case SET_BROWSE_ARTIST_SONGS:
+      const updatedArtists = state.artists
+      updatedArtists[action.artistId].songs = action.songs
+      return {
+        ...state,
+        artists: updatedArtists
       }
   }
   return state

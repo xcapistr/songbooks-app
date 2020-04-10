@@ -82,7 +82,7 @@ const BookDetail = props => {
           >
             <View style={styles.songInfo}>
               <Text style={styles.songName}>{songs[item].name}</Text>
-              <Text style={styles.songArtist}>{songs[item].artist.name}</Text>
+              <Text style={styles.songArtist}>{songs[item].artist}</Text>
             </View>
             <Ionicons name="ios-arrow-forward" size={25} color="#ccc" />
           </TouchableOpacity>

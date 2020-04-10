@@ -13,7 +13,7 @@ const BrowseL2Screen = props => {
     ) : props.navigation.getParam('type') === 'book' ? (
       <BookDetail id={props.navigation.getParam('id')} navigation={props.navigation} />
     ) : props.navigation.getParam('type') === 'artist' ? (
-      <ArtistDetail id={props.navigation.getParam('id')} navigation={props.navigation} />
+      <ArtistDetail navigation={props.navigation} />
     ) : null
 
   return content

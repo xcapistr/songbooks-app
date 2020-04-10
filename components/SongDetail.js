@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useRef } from 'react'
 import {
   StyleSheet,
   View,
   Text,
   ScrollView,
   TouchableOpacity,
-  ActivityIndicator,
   TouchableWithoutFeedback,
   Animated
 } from 'react-native'
@@ -39,9 +38,7 @@ const secondsToTime = secs => {
 
 const SongDetail = props => {
   // TODO: prevent unnecessary calling
-  const song = useSelector(state =>
-    {
-      console.log('get song data...')
+  const song = useSelector(state => {
     return props.navigation.getParam('root') === 'Home'
       ? state.user.books[props.navigation.getParam('bookId')].songs[
           props.navigation.getParam('songId')
@@ -50,13 +47,15 @@ const SongDetail = props => {
       ? state.browse.books[props.navigation.getParam('bookId')].songs[
           props.navigation.getParam('songId')
         ]
+      : props.navigation.getParam('artistId')
+      ? state.browse.artists[props.navigation.getParam('artistId')].songs[
+          props.navigation.getParam('songId')
+        ]
       : state.browse.songs[props.navigation.getParam('songId')]
-    }
-  )
-    console.log('SONGGGG', props.navigation.getParam('bookId'), song)
+  })
+
   const transformedText = textTransform(song.text)
 
-  // const [isLoading, setIsLoading] = useState(false)
   const [showToolbar, setShowToolbar] = useState(false)
   const [scrollContentHeight, setScrollContentHeight] = useState(0)
   const [scrollViewHeight, setScrollViewHeight] = useState(0)
@@ -79,17 +78,6 @@ const SongDetail = props => {
 
   const [scrollAnimationPos] = useState(scrollAnimatedValue)
 
-  // const reload = async () => {
-  //   setIsLoading(true)
-  //   const song = await GetSong(props.id)
-  //   setData({ ...song, text: song.text })
-  //   setIsLoading(false)
-  // }
-
-  // useEffect(() => {
-  //   reload()
-  // }, [])
-
   const toggleToolbar = () => {
     setShowToolbar(prevState => !prevState)
   }
@@ -111,14 +99,6 @@ const SongDetail = props => {
       Animated.timing(scrollAnimationPos).stop()
     }
   }
-
-  // if (isLoading) {
-  //   return (
-  //     <View style={styles.centered}>
-  //       <ActivityIndicator size="large" color={Colors.primary} />
-  //     </View>
-  //   )
-  // }
 
   return (
     <View style={styles.screen}>
