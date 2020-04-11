@@ -4,12 +4,16 @@ export const SET_USER_BOOKS = 'SET_BOOKS'
 export const SET_USER_BOOK_SONGS = 'SET_BOOK_SONGS'
 
 export const fetchBooks = () => {
-  return async dispatch => {
-    const booksData = await GetBooks()
-    dispatch({
-      type: SET_USER_BOOKS,
-      books: booksData
-    })
+  return async (dispatch) => {
+    try {
+      const booksData = await GetBooks()
+      dispatch({
+        type: SET_USER_BOOKS,
+        books: booksData,
+      })
+    } catch (error) {
+      throw error
+    }
   }
 }
 
@@ -20,7 +24,7 @@ export const fetchBookSongs = (bookId) => {
     dispatch({
       type: SET_USER_BOOK_SONGS,
       bookId,
-      songs: songsData
+      songs: songsData,
     })
   }
 }
