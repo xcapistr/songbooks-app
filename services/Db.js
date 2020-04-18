@@ -57,7 +57,7 @@ export const GetBooks = async () => {
   const querySnapshot = await booksRef.get()
   querySnapshot.forEach(item => {
     const book = item.data()
-    result[item.id] = { id: item.id, name: book.name, songIds: book.songs, songs: [], image: book.image }
+    result[item.id] = { id: item.id, name: book.name, songIds: book.songs, songs: {}, image: book.image }
   })
   return result
 }

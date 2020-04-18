@@ -61,8 +61,9 @@ const ChordSchema = props => {
         style={{ ...styles.headingWrapper, ...dynamicStyles.headingWrapper }}
       >
         <View style={styles.heading}>
-          {schema.map(ch => (
+          {schema.map((ch, i) => (
             <View
+              key={i}
               style={{ ...styles.headingIcon, ...dynamicStyles.headingIcon }}
             >
               {ch === 'x' ? (
@@ -123,8 +124,9 @@ const ChordSchema = props => {
       <View style={{ ...styles.pointsWrapper, ...dynamicStyles.pointsWrapper }}>
         <View style={styles.points}>
           <View style={styles.pointsLine}>
-            {schema.map(ch => (
+            {schema.map((ch,i) => (
               <View
+                key={i}
                 style={{
                   ...styles.point,
                   ...dynamicStyles.point,
@@ -134,8 +136,9 @@ const ChordSchema = props => {
             ))}
           </View>
           <View style={styles.pointsLine}>
-            {schema.map(ch => (
+            {schema.map((ch, i) => (
               <View
+                key={i}
                 style={{
                   ...styles.point,
                   ...dynamicStyles.point,
@@ -145,8 +148,9 @@ const ChordSchema = props => {
             ))}
           </View>
           <View style={styles.pointsLine}>
-            {schema.map(ch => (
+            {schema.map((ch,i) => (
               <View
+                key={i}
                 style={{
                   ...styles.point,
                   ...dynamicStyles.point,
@@ -156,8 +160,9 @@ const ChordSchema = props => {
             ))}
           </View>
           <View style={styles.pointsLine}>
-            {schema.map(ch => (
+            {schema.map((ch, i) => (
               <View
+                key={i}
                 style={{
                   ...styles.point,
                   ...dynamicStyles.point,
@@ -167,8 +172,9 @@ const ChordSchema = props => {
             ))}
           </View>
           <View style={styles.pointsLine}>
-            {schema.map(ch => (
+            {schema.map((ch, i) => (
               <View
+                key={i}
                 style={{
                   ...styles.point,
                   ...dynamicStyles.point,

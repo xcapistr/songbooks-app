@@ -15,10 +15,17 @@ const BrowseScreen = props => {
     ...state.browse.artists,
     ...state.browse.songs
   }))
+
   const dispatch = useDispatch()
 
   const search = async query => {
-    dispatch(browseActions.fetchResults(query))
+    try {
+      console.log('search results loading...')
+      await dispatch(browseActions.fetchResults(query))
+      console.log('done')
+    } catch (error) {
+      throw error
+    }
   }
 
   useEffect(() => {

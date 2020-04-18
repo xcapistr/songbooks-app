@@ -14,8 +14,8 @@ const Modal = props => {
         </View>
         <View style={styles.body}>{props.children}</View>
         <View style={styles.buttons}>
-          {props.buttons.map(button => (
-            <Button title={button.title} type={button.type} onPress={button.action}/>
+          {props.buttons.map((button, i) => (
+            <Button key={i} title={button.title} type={button.type} onPress={button.action}/>
           ))}
         </View>
       </View>

@@ -4,12 +4,21 @@ export const SET_USER_BOOKS = 'SET_BOOKS'
 export const SET_USER_BOOK_SONGS = 'SET_BOOK_SONGS'
 
 export const fetchBooks = () => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     try {
-      const booksData = await GetBooks()
+      const prevBooks = getState().user.books
+      const books = await GetBooks()
+      const booksData = {}
+      Object.keys(books).forEach(bookId => {
+        booksData[bookId] = {
+          ...books[bookId],
+          songs: prevBooks[bookId] ? prevBooks[bookId].songs : {}
+        }
+      })
+
       dispatch({
         type: SET_USER_BOOKS,
-        books: booksData,
+        books: booksData
       })
     } catch (error) {
       throw error
@@ -17,14 +26,14 @@ export const fetchBooks = () => {
   }
 }
 
-export const fetchBookSongs = (bookId) => {
+export const fetchBookSongs = bookId => {
   return async (dispatch, getState) => {
     const songIds = getState().user.books[bookId].songIds
     const songsData = await GetSongsByIds(songIds)
     dispatch({
       type: SET_USER_BOOK_SONGS,
       bookId,
-      songs: songsData,
+      songs: songsData
     })
   }
 }

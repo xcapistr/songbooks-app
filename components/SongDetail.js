@@ -200,11 +200,12 @@ const SongDetail = props => {
             <View style={styles.textWrapper}>
               {transformedText.map((t, i) =>
                 t === '[--]' ? (
-                  <View style={styles.newLineDouble}></View>
+                  <View key={i} style={styles.newLineDouble}></View>
                 ) : t === '[-]' ? (
-                  <View style={styles.newLine}></View>
+                  <View key={i} style={styles.newLine}></View>
                 ) : t[0] === '[' ? (
                   <View
+                    key={i}
                     style={{
                       ...styles.chordWrapper,
                       height: chordSize + textSize
@@ -228,7 +229,7 @@ const SongDetail = props => {
                     </TouchableOpacity>
                   </View>
                 ) : (
-                  <View>
+                  <View key={i}>
                     <Text style={{ ...styles.wordText, fontSize: textSize }}>{t}</Text>
                   </View>
                 )

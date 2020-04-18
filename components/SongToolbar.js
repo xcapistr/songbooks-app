@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   toolbar: {
     height: 50,
     borderWidth: 1,
-    borderRadius: 25,
+    borderRadius: 10,
     borderColor: Colors.lightest,
     backgroundColor: 'white',
     flexDirection: 'row',

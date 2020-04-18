@@ -3,7 +3,6 @@ import {
   StyleSheet,
   View,
   FlatList,
-  Image,
   Text,
   TouchableOpacity,
   ActivityIndicator
@@ -12,6 +11,7 @@ import { Ionicons } from '@expo/vector-icons'
 import { useSelector, useDispatch } from 'react-redux'
 
 import * as browseActions from '../store/actions/browse'
+import Colors from '../constants/Colors'
 
 const ItemSeparator = () => (
   <View style={{ backgroundColor: '#ddd', height: 1, marginLeft: 20 }}></View>
@@ -22,10 +22,39 @@ const ListFooter = () => <View style={{ backgroundColor: '#ddd', height: 1 }}></
 const ArtistDetail = props => {
   const songs = useSelector(state => state.browse.artists[props.navigation.getParam('id')].songs)
   const dispatch = useDispatch()
+  const [isLoading, setIsLoading] = useState(false)
+
+  const loadSongs = async () => {
+    try {
+      console.log('artist songs loading...')
+      await dispatch(browseActions.fetchArtistSongs(props.navigation.getParam('id')))
+      console.log('done')
+    } catch (error) {
+      throw error
+    }
+  }
 
   useEffect(() => {
-    dispatch(browseActions.fetchArtistSongs(props.navigation.getParam('id')))
+    const willFocusScreen = props.navigation.addListener('willFocus', loadSongs)
+    return () => {
+      willFocusScreen.remove()
+    }
+  }, [loadSongs])
+
+  useEffect(() => {
+    !Object.keys(songs).length && setIsLoading(true)
+    loadSongs().then(() => {
+      setIsLoading(false)
+    })
   }, [dispatch])
+
+  if (isLoading) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color={Colors.primary} />
+      </View>
+    )
+  }
 
   return (
     <View style={styles.screen}>
@@ -53,7 +82,7 @@ const ArtistDetail = props => {
             <Ionicons name="ios-arrow-forward" size={25} color="#ccc" />
           </TouchableOpacity>
         )}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item}
       ></FlatList>
     </View>
   )

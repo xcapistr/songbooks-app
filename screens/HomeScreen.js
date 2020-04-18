@@ -13,7 +13,7 @@ const HomeScreen = (props) => {
 
   const loadBooks = async () => {
     try {
-      console.log('loading...')
+      console.log('user books loading...')
       await dispatch(userActions.fetchBooks())
       console.log('done')
     } catch (error) {

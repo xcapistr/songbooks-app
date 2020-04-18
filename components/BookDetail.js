@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   StyleSheet,
   View,
@@ -6,7 +6,7 @@ import {
   Image,
   TouchableOpacity,
   Text,
-  // ActivityIndicator
+  ActivityIndicator
 } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { useSelector, useDispatch } from 'react-redux'
@@ -28,9 +28,13 @@ const ItemSeparator = () => (
 
 const ListFooter = () => <View style={{ backgroundColor: '#ddd', height: 1 }}></View>
 
-const BookDetail = props => {
-  // const [isLoading, setIsLoading] = useState(false)
+const Spinner = () => (
+  <View style={styles.spinner}>
+    <ActivityIndicator size="large" color={Colors.primary} />
+  </View>
+)
 
+const BookDetail = props => {
   const songs = useSelector(state =>
     props.navigation.getParam('root') === 'Home'
       ? state.user.books[props.navigation.getParam('id')].songs
@@ -42,22 +46,35 @@ const BookDetail = props => {
       : state.browse.books[props.navigation.getParam('id')].image
   )
   const dispatch = useDispatch()
+  const [isLoading, setIsLoading] = useState(false)
+
+  const loadSongs = async () => {
+    try {
+      console.log('book songs loading...')
+      await dispatch(
+        props.navigation.getParam('root') === 'Home'
+          ? userActions.fetchBookSongs(props.navigation.getParam('id'))
+          : browseActions.fetchBookSongs(props.navigation.getParam('id'))
+      )
+      console.log('done')
+    } catch (error) {
+      throw error
+    }
+  }
 
   useEffect(() => {
-    dispatch(
-      props.navigation.getParam('root') === 'Home'
-        ? userActions.fetchBookSongs(props.navigation.getParam('id'))
-        : browseActions.fetchBookSongs(props.navigation.getParam('id'))
-    )
-  }, [dispatch])
+    const willFocusScreen = props.navigation.addListener('willFocus', loadSongs)
+    return () => {
+      willFocusScreen.remove()
+    }
+  }, [loadSongs])
 
-  // if (isLoading) {
-  //   return (
-  //     <View style={styles.centered}>
-  //       <ActivityIndicator size="large" color={Colors.primary} />
-  //     </View>
-  //   )
-  // }
+  useEffect(() => {
+    !Object.keys(songs).length && setIsLoading(true)
+    loadSongs().then(() => {
+      setIsLoading(false)
+    })
+  }, [dispatch])
 
   return (
     <View style={styles.screen}>
@@ -65,7 +82,7 @@ const BookDetail = props => {
         contentContainerStyle={{ paddingBottom: 5, paddingTop: 5 }}
         ListHeaderComponent={ListHeader(image)}
         ItemSeparatorComponent={ItemSeparator}
-        ListFooterComponent={ListFooter}
+        ListFooterComponent={isLoading ? Spinner : ListFooter}
         data={Object.keys(songs)}
         renderItem={({ item }) => (
           <TouchableOpacity
@@ -87,17 +104,15 @@ const BookDetail = props => {
             <Ionicons name="ios-arrow-forward" size={25} color="#ccc" />
           </TouchableOpacity>
         )}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item}
       ></FlatList>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  centered: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+  spinner: {
+    margin: 50
   },
   screen: {
     flex: 1
@@ -107,12 +122,7 @@ const styles = StyleSheet.create({
     height: 130,
     alignSelf: 'center',
     margin: 20,
-    borderRadius: 10,
-    elevation: 4,
-    shadowColor: Colors.darker,
-    shadowOffset: { with: 0, height: 2 },
-    shadowOpacity: 0.26,
-    shadowRadius: 4
+    borderRadius: 10
   },
   songTouchable: {
     paddingVertical: 8,
