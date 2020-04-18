@@ -1,10 +1,10 @@
 {
-  "devToolsPort": 19002,
+  "devToolsPort": 19003,
   "expoServerPort": 19000,
   "expoServerNgrokUrl": "https://ub-f7r.xcapistr.songbooks-app.exp.direct",
   "packagerNgrokUrl": "https://packager.ub-f7r.xcapistr.songbooks-app.exp.direct",
-  "ngrokPid": 9357,
-  "packagerPort": 19001,
-  "packagerPid": 9312,
+  "ngrokPid": 12282,
+  "packagerPort": 19004,
+  "packagerPid": 12267,
   "webpackServerPort": null
 }

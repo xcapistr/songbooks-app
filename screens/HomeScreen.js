@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, View, FlatList, ActivityIndicator } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
+import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 
 import Colors from '../constants/Colors'
 import BookCard from '../components/BookCard'
 import * as userActions from '../store/actions/user'
+import HeaderIcon from '../components/HeaderIcon'
 
-const HomeScreen = (props) => {
-  const books = useSelector((state) => state.user.books)
+const HomeScreen = props => {
+  const books = useSelector(state => state.user.books)
   const dispatch = useDispatch()
   const [isLoading, setIsLoading] = useState(false)
 
@@ -58,33 +60,45 @@ const HomeScreen = (props) => {
                 type: 'book',
                 id: item,
                 name: books[item].name,
-                root: 'Home',
+                root: 'Home'
               })
             }
           />
         )}
-        keyExtractor={(item) => item}
+        keyExtractor={item => item}
       ></FlatList>
     </View>
   )
 }
 
-HomeScreen.navigationOptions = {
+HomeScreen.navigationOptions = navData => ({
   headerTitle: 'Your Library',
   headerStyle: {
-    backgroundColor: 'white',
+    backgroundColor: 'white'
   },
   headerTintColor: Colors.primary,
-}
+  headerRight: (
+    <HeaderButtons HeaderButtonComponent={HeaderIcon}>
+      <Item
+        title="Menu"
+        iconName={Platform.OS === 'android' ? 'md-add' : 'ios-add'}
+        onPress={() => navData.navigation.navigate('HomeL2', {
+          type: 'newBook',
+          name: 'New Book'
+        })}
+      />
+    </HeaderButtons>
+  )
+})
 
 const styles = StyleSheet.create({
   centered: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   screen: {
-    flex: 1,
-  },
+    flex: 1
+  }
 })
 
 export default HomeScreen
