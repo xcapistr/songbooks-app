@@ -15,7 +15,13 @@ const Modal = props => {
         <View style={styles.body}>{props.children}</View>
         <View style={styles.buttons}>
           {props.buttons.map((button, i) => (
-            <Button key={i} title={button.title} type={button.type} onPress={button.action}/>
+            <Button
+              key={i}
+              title={button.title}
+              type={button.type}
+              onPress={button.action}
+              style={styles.button}
+            />
           ))}
         </View>
       </View>
@@ -46,6 +52,9 @@ const styles = StyleSheet.create({
     borderTopColor: Colors.lightest,
     flexDirection: 'row',
     padding: 7
+  },
+  button: {
+    flex: 1
   }
 })
 

@@ -19,7 +19,7 @@ const Button = props => {
       break
   }
   return (
-    <TouchableOpacity style={{ ...styles.button, ...buttonTypeStyle }} onPress={props.onPress}>
+    <TouchableOpacity style={{ ...styles.button, ...buttonTypeStyle, ...props.style }} onPress={props.onPress}>
       <Text style={{ ...styles.buttonTitle, ...titleTypeStyle }}>
         {props.title}
       </Text>
@@ -32,7 +32,6 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 10,
     margin: 7,
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     shadowOffset: { with: 1, height: 3 },
@@ -40,7 +39,8 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 6,
     backgroundColor: 'white',
-    shadowColor: Colors.primary
+    shadowColor: Colors.primary,
+    paddingHorizontal: 20
   },
   buttonTitle: {
     fontSize: 16,

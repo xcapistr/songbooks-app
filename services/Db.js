@@ -57,12 +57,19 @@ export const GetBooks = async () => {
   const querySnapshot = await booksRef.get()
   querySnapshot.forEach(item => {
     const book = item.data()
-    result[item.id] = { id: item.id, name: book.name, songIds: book.songs, songs: {}, image: book.image }
+    result[item.id] = {
+      id: item.id,
+      name: book.name,
+      songIds: book.songs,
+      songs: {},
+      image: book.image
+    }
   })
   return result
 }
 
 export const GetSongsByIds = async songIds => {
+  if (songIds.length === 0) return {}
   const result = {}
   const songsRef = firestore
     .collection('songs')
@@ -135,10 +142,7 @@ export const Search = async q => {
   })
 
   //search in songs
-  const songs = await firestore
-    .collection('songs')
-    .where('keywords', 'array-contains', query)
-    .get()
+  const songs = await firestore.collection('songs').where('keywords', 'array-contains', query).get()
 
   songs.forEach(item => {
     const song = item.data()
@@ -151,6 +155,17 @@ export const Search = async q => {
     }
   })
   return result
+}
+
+export const createBook = async (name, image) => {
+  const keywords = generateKeywords(name)
+  await firestore.collection('songbooks').add({
+    name,
+    songs: [],
+    image,
+    keywords
+  })
+  console.log('Songbook successfully written!')
 }
 
 const generateKeywords = name => {
