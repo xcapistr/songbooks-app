@@ -24,7 +24,7 @@ const fetchFonts = () => {
   })
 }
 
-import MainNavigator from './navigation/MainNavigation'
+import RootStackNavigator from './navigation/MainNavigation'
 
 export default function App() {
   const [dataLoaded, setDataLoaded] = useState(false)
@@ -41,7 +41,7 @@ export default function App() {
 
   return (
     <Provider store={store}>
-      <MainNavigator />
+      <RootStackNavigator />
     </Provider>
   )
 }

@@ -57,7 +57,7 @@ const NewBook = props => {
 
   const save = async () => {
     await createBook(name, image)
-    props.navigation.goBack()
+    props.goBack()
   }
 
   return (

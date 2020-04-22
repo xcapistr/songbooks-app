@@ -4,7 +4,6 @@ import { StyleSheet } from 'react-native'
 import SongDetail from '../components/SongDetail'
 import BookDetail from '../components/BookDetail'
 import ArtistDetail from '../components/ArtistDetail'
-import NewBook from '../components/NewBook'
 import Colors from '../constants/Colors'
 
 const BrowseL2Screen = props => {
@@ -16,8 +15,6 @@ const BrowseL2Screen = props => {
       <BookDetail id={props.navigation.getParam('id')} navigation={props.navigation} />
     ) : type === 'artist' ? (
       <ArtistDetail navigation={props.navigation} />
-    ) : type === 'newBook' ? (
-      <NewBook navigation={props.navigation} />
     ) : null
 
   return content

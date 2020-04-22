@@ -82,10 +82,7 @@ HomeScreen.navigationOptions = navData => ({
       <Item
         title="Menu"
         iconName={Platform.OS === 'android' ? 'md-add' : 'ios-add'}
-        onPress={() => navData.navigation.navigate('HomeL2', {
-          type: 'newBook',
-          name: 'New Book'
-        })}
+        onPress={() => navData.navigation.navigate('modal', {type: 'new-book'})}
       />
     </HeaderButtons>
   )

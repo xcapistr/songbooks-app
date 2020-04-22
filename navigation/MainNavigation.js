@@ -11,6 +11,7 @@ import HomeScreen from '../screens/HomeScreen'
 import SettingsScreen from '../screens/SettingsScreen'
 import L2Screen from '../screens/L2Screen'
 import L3Screen from '../screens/L3Screen'
+import ModalScreen from '../screens/ModalScreen'
 import Colors from '../constants/Colors'
 
 const browseStackNavigator = createStackNavigator({
@@ -60,9 +61,7 @@ const mainTabNavigatorConfig = {
     navigationOptions: {
       tabBarLabel: 'Browse',
       tabBarIcon: tabInfo => {
-        return (
-          <Ionicons name="ios-search" size={25} color={tabInfo.tintColor} />
-        )
+        return <Ionicons name="ios-search" size={25} color={tabInfo.tintColor} />
       }
     }
   },
@@ -80,9 +79,7 @@ const mainTabNavigatorConfig = {
     navigationOptions: {
       tabBarLabel: 'Settings',
       tabBarIcon: tabInfo => {
-        return (
-          <Ionicons name="ios-settings" size={25} color={tabInfo.tintColor} />
-        )
+        return <Ionicons name="ios-settings" size={25} color={tabInfo.tintColor} />
       }
     }
   }
@@ -107,4 +104,19 @@ const mainTabNavigator =
         }
       })
 
-export default createAppContainer(mainTabNavigator)
+const rootStackNavigator = createStackNavigator(
+  {
+    main: {
+      screen: mainTabNavigator,
+      navigationOptions: {
+        header: null
+      }
+    },
+    modal: ModalScreen
+  },
+  {
+    mode: 'modal'
+  }
+)
+
+export default createAppContainer(rootStackNavigator)
