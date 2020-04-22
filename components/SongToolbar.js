@@ -1,11 +1,27 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, Text, TouchableOpacity, Animated } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  Animated,
+  Dimensions,
+  Platform
+} from 'react-native'
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 
 import Colors from '../constants/Colors'
 
 const SongToolbar = props => {
   const [bottomAnim] = useState(new Animated.Value(-100))
+
+  //TODO: solve this globaly
+  const dimensions = Dimensions.get('window')
+  const ratio =
+    dimensions.height > dimensions.width
+      ? dimensions.height / dimensions.width
+      : dimensions.width / dimensions.height
+  console.log(ratio)
 
   useEffect(() => {
     const bottom = props.show ? 0 : -100
@@ -17,8 +33,15 @@ const SongToolbar = props => {
   }, [props.show])
 
   return (
-    <Animated.View style={{ ...styles.wrapper, bottom: bottomAnim }}>
-      <View style={styles.toolbar}>
+    <Animated.View
+      style={{
+        ...styles.wrapper,
+        bottom: bottomAnim
+      }}
+    >
+      <View
+        style={{ ...styles.toolbar, marginBottom: Platform.OS === 'ios' && ratio > 2 ? 30 : 10 }}
+      >
         <TouchableOpacity style={styles.toolbarButton} onPress={props.onTextSize}>
           <MaterialCommunityIcons name="format-size" size={25} color={Colors.primary} />
         </TouchableOpacity>
@@ -39,7 +62,7 @@ const SongToolbar = props => {
         <TouchableOpacity style={styles.toolbarButton} onPress={props.onSpeed}>
           <Ionicons name="ios-speedometer" size={25} color={Colors.primary} />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.toolbarMiddleButton} onPress={props.onTogglePlay}>
+        <TouchableOpacity style={styles.toolbarPlayButton} onPress={props.onTogglePlay}>
           <Ionicons name={props.isPlaying ? 'ios-pause' : 'ios-play'} size={25} color="white" />
         </TouchableOpacity>
       </View>
@@ -69,13 +92,14 @@ const styles = StyleSheet.create({
     shadowOffset: { with: 0, height: 2 },
     shadowOpacity: 0.26,
     shadowRadius: 4,
-    paddingHorizontal: 5
+    paddingLeft: 10
   },
-  toolbarMiddleButton: {
+  toolbarPlayButton: {
     backgroundColor: Colors.primary,
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 50,
+    height: 49,
+    borderTopRightRadius: 10,
+    borderBottomRightRadius: 10,
     justifyContent: 'center',
     alignItems: 'center'
   },
