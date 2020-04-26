@@ -17,6 +17,7 @@ import * as Permissions from 'expo-permissions'
 import Colors from '../constants/Colors'
 import Button from '../components/Button'
 import { createBook } from '../services/Db'
+import Icon from '../components/Icon'
 
 const NewBook = props => {
   const [name, setName] = useState('')
@@ -89,6 +90,8 @@ const NewBook = props => {
           onBlur={() => setIsNameFocused(false)}
         />
         <Button style={styles.button} onPress={save} title="Save"></Button>
+        <Icon name="heart-outline" color={Colors.primary} size={50}/>
+        <Icon name="albums-outline" color={Colors.primary} size={50}/>
       </View>
     </TouchableWithoutFeedback>
   )

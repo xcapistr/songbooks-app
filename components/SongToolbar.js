@@ -8,9 +8,9 @@ import {
   Dimensions,
   Platform
 } from 'react-native'
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons'
 
 import Colors from '../constants/Colors'
+import Icon from '../components/Icon'
 
 const SongToolbar = props => {
   const [bottomAnim] = useState(new Animated.Value(-100))
@@ -43,27 +43,27 @@ const SongToolbar = props => {
         style={{ ...styles.toolbar, marginBottom: Platform.OS === 'ios' && ratio > 2 ? 30 : 10 }}
       >
         <TouchableOpacity style={styles.toolbarButton} onPress={props.onTextSize}>
-          <MaterialCommunityIcons name="format-size" size={25} color={Colors.primary} />
+          <Icon name="text-size" size={20} color={Colors.primary} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.toolbarButton}>
-          <MaterialCommunityIcons name="guitar-acoustic" size={25} color={Colors.primary} />
+          <Icon name="create-outline" size={20} color={Colors.primary} />
         </TouchableOpacity>
         <View style={styles.divider}></View>
         <TouchableOpacity style={styles.toolbarButton} onPress={props.transposeDown}>
-          <Ionicons name="ios-remove" size={20} color={Colors.primary} />
+          <Icon name="remove-outline" size={20} color={Colors.primary} />
         </TouchableOpacity>
         <View style={styles.transpositionDisplay}>
           <Text style={styles.transpositionText}>{props.transposition}</Text>
         </View>
         <TouchableOpacity style={styles.toolbarButton} onPress={props.transposeUp}>
-          <Ionicons name="ios-add" size={20} color={Colors.primary} />
+          <Icon name="add-outline" size={20} color={Colors.primary} />
         </TouchableOpacity>
         <View style={styles.divider}></View>
         <TouchableOpacity style={styles.toolbarButton} onPress={props.onSpeed}>
-          <Ionicons name="ios-speedometer" size={25} color={Colors.primary} />
+          <Icon name="speedometer-outline" size={20} color={Colors.primary} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.toolbarPlayButton} onPress={props.onTogglePlay}>
-          <Ionicons name={props.isPlaying ? 'ios-pause' : 'ios-play'} size={25} color="white" />
+          <Icon name={props.isPlaying ? 'pause' : 'play'} size={20} color="white" />
         </TouchableOpacity>
       </View>
     </Animated.View>
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
   },
   toolbar: {
     height: 50,
-    borderWidth: 1,
+    borderWidth: 0.5,
     borderRadius: 10,
     borderColor: Colors.lightest,
     backgroundColor: 'white',
@@ -115,8 +115,7 @@ const styles = StyleSheet.create({
     height: 35,
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 2,
-    borderColor: Colors.primary,
+    backgroundColor: Colors.lightest,
     borderRadius: 5
   },
   transpositionText: {
@@ -124,7 +123,7 @@ const styles = StyleSheet.create({
     fontSize: 16
   },
   divider: {
-    height: 50,
+    height: 49,
     width: 1,
     backgroundColor: Colors.lightest
   }

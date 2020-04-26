@@ -13,6 +13,7 @@ import L2Screen from '../screens/L2Screen'
 import L3Screen from '../screens/L3Screen'
 import ModalScreen from '../screens/ModalScreen'
 import Colors from '../constants/Colors'
+import Icon from '../components/Icon'
 
 const browseStackNavigator = createStackNavigator({
   Browse: BrowseScreen,
@@ -61,7 +62,7 @@ const mainTabNavigatorConfig = {
     navigationOptions: {
       tabBarLabel: 'Browse',
       tabBarIcon: tabInfo => {
-        return <Ionicons name="ios-search" size={25} color={tabInfo.tintColor} />
+        return <Icon name="search-outline" size={25} color={tabInfo.tintColor} />
       }
     }
   },
@@ -70,7 +71,7 @@ const mainTabNavigatorConfig = {
     navigationOptions: {
       tabBarLabel: 'Home',
       tabBarIcon: tabInfo => {
-        return <Ionicons name="ios-home" size={25} color={tabInfo.tintColor} />
+        return <Icon name="albums-outline" size={25} color={tabInfo.tintColor} />
       }
     }
   },
@@ -79,7 +80,7 @@ const mainTabNavigatorConfig = {
     navigationOptions: {
       tabBarLabel: 'Settings',
       tabBarIcon: tabInfo => {
-        return <Ionicons name="ios-settings" size={25} color={tabInfo.tintColor} />
+        return <Icon name="cog-outline" size={25} color={tabInfo.tintColor} />
       }
     }
   }
