@@ -1,4 +1,4 @@
-import { Search, GetSongsByIds, GetArtistSongs } from '../../services/Db'
+import { Search, GetArtistSongs, GetBookSongs } from '../../services/Db'
 
 export const SET_BROWSE_RESULTS = 'SET_BROWSE_RESULTS'
 export const SET_BROWSE_BOOK_SONGS = 'SET_BROWSE_BOOK_SONGS'
@@ -19,10 +19,9 @@ export const fetchResults = query => {
 }
 
 export const fetchBookSongs = bookId => {
-  return async (dispatch, getState) => {
+  return async dispatch => {
     try {
-      const songIds = getState().browse.books[bookId].songIds
-      const songsData = await GetSongsByIds(songIds)
+      const songsData = await GetBookSongs(bookId)
       dispatch({
         type: SET_BROWSE_BOOK_SONGS,
         bookId,

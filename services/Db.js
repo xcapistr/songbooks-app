@@ -62,19 +62,49 @@ export const GetSongsByIds = async songIds => {
   return result
 }
 
+export const GetBookSongs = async bookId => {
+  try {
+    const result = {}
+    const data = (await axios.get(`https://songbooks-app.herokuapp.com/books/${bookId}/songs`)).data
+    data.forEach(song => {
+      result[song.id] = {
+        id: song.id,
+        name: song.name,
+        text: song.text,
+        artist: song.artist,
+        artistName: song.artistName,
+        owner: song.owner,
+        ownerName: song.ownerName,
+        private: song.private,
+        stars: song.stars,
+        votes: song.votes
+      }
+    })
+    return result
+  } catch (error) {
+    console.log('ERROR:', error)
+  }
+}
+
 export const GetArtistSongs = async artistId => {
   try {
     const result = {}
-    const songsRef = firestore.collection('songs').where('artist.id', '==', artistId)
-    const songsSnapshot = await songsRef.get()
-    songsSnapshot.forEach(item => {
-      const song = item.data()
-      result[item.id] = {
-        id: item.id,
+    const data = (await axios.get(`https://songbooks-app.herokuapp.com/artists/${artistId}/songs`)).data
+    data.forEach(song => {
+      result[song.id] = {
+        id: song.id,
         name: song.name,
-        text: song.text
+        text: song.text,
+        artist: song.artist,
+        artistName: song.artistName,
+        owner: song.owner,
+        ownerName: song.ownerName,
+        private: song.private,
+        stars: song.stars,
+        votes: song.votes
       }
     })
+    console.log('ARTIST_SONGS:', result)
     return result
   } catch (error) {
     console.log('ERROR:', error)
@@ -91,7 +121,7 @@ export const Search = async q => {
     if (!q) return result
     const data = (await axios.get(`https://songbooks-app.herokuapp.com/browse?query=${q}`)).data
     data.songs.forEach(s => {
-      result.books[s.id] = {
+      result.songs[s.id] = {
         id: s.id,
         type: 'song',
         name: s.name,
@@ -106,11 +136,12 @@ export const Search = async q => {
       }
     })
     data.artists.forEach(a => {
-      result.books[a.id] = {
+      result.artists[a.id] = {
         id: a.id,
         type: 'artist',
         name: a.name,
-        songsCount: a.songsCount
+        songsCount: a.songsCount,
+        songs: {}
       }
     })
     data.books.forEach(b => {
@@ -124,7 +155,8 @@ export const Search = async q => {
         ownerName: b.ownerName,
         private: b.private,
         stars: b.stars,
-        votes: b.votes
+        votes: b.votes,
+        songs: {}
       }
     })
     return result
