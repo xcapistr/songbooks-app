@@ -196,7 +196,7 @@ const SongDetail = props => {
         <TouchableWithoutFeedback onPress={toggleToolbar}>
           <View>
             <Text style={styles.title}>{song.name}</Text>
-            <Text style={styles.artist}>by {song.artist}</Text>
+            <Text style={styles.artist}>by {song.artistName}</Text>
             <View style={styles.textWrapper}>
               {transformedText.map((t, i) =>
                 t === '[--]' ? (

@@ -1,8 +1,10 @@
 export default textTransform = text => {
   if (text.length) {
     const formatedText = text
-      .split('[-][-]')
+      .split('\\n\\n')
       .join('[--]')
+      .split('\\n')
+      .join('[-]')
       .split('[')
       .join('|[')
       .split(']')
