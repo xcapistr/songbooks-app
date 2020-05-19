@@ -3,15 +3,14 @@ import { View, TextInput, Animated } from 'react-native'
 
 import Colors from '../constants/Colors'
 
-const AnimatedInput = props => {
+const AnimatedInput = React.forwardRef((props, ref) => {
   const [isFocused, setIsFocused] = useState(false)
   const [labelAnimation] = useState(new Animated.Value(props.value === '' ? 0 : 1))
 
   useEffect(() => {
-      console.log('focused:', isFocused)
     Animated.timing(labelAnimation, {
       toValue: isFocused || props.value !== '' ? 1 : 0,
-      duration: 300
+      duration: 200
     }).start()
   }, [isFocused])
 
@@ -20,34 +19,56 @@ const AnimatedInput = props => {
     left: 0,
     top: labelAnimation.interpolate({
       inputRange: [0, 1],
-      outputRange: [18, 0]
+      outputRange: [14, 0]
     }),
     fontSize: labelAnimation.interpolate({
       inputRange: [0, 1],
-      outputRange: [20, 14]
+      outputRange: [16, 12]
     }),
     color: labelAnimation.interpolate({
       inputRange: [0, 1],
-      outputRange: ['#aaa', Colors.primary]
+      outputRange: ['#bbb', Colors.primary]
     })
   }
   return (
-    <View style={{ paddingTop: 18, width: '100%', margin: 5}}>
+    <View
+      style={{
+        paddingTop: 14,
+        width: '100%',
+        marginBottom: isFocused && props.underline ? 4 : 5,
+        ...props.style
+      }}
+    >
       <Animated.Text style={labelStyle}>{props.label}</Animated.Text>
       <TextInput
-        {...props}
+        value={props.value}
+        onChangeText={props.onChangeText}
+        autoCorrect={false}
+        ref={ref}
         style={{
-          fontSize: 20,
+          fontSize: 16,
           color: '#333',
-          borderBottomWidth: 1,
-          borderBottomColor: isFocused ? Colors.primary : Colors.lighter,
-          width: '100%'
+          paddingBottom: 4,
+          borderBottomColor: isFocused ? Colors.primary : '#ddd',
+          borderBottomWidth: props.underline ? (isFocused ? 2 : 1) : 0,
+          width: '100%',
+          textAlignVertical: 'top',
+          height: props.multiline ? '100%' : null
         }}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
+        onSelectionChange={props.onSelectionChange}
+        autoCapitalize={props.autoCapitalize || 'sentences'}
+        multiline={props.multiline}
+        onFocus={() => {
+          props.onFocus && props.onFocus()
+          setIsFocused(true)
+        }}
+        onBlur={() => {
+          props.onBlur && props.onBlur()
+          setIsFocused(false)
+        }}
       />
     </View>
   )
-}
+})
 
 export default AnimatedInput

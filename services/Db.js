@@ -97,6 +97,7 @@ export const Search = async q => {
       artists: {},
       songs: {}
     }
+    
     if (!q) return result
     const data = (await axios.get(`https://songbooks-app.herokuapp.com/browse?query=${q}`)).data
     data.songs.forEach(s => {
