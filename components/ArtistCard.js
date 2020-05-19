@@ -14,7 +14,9 @@ const ArtistCard = props => {
       <View style={styles.infoWrapper}>
         <Text style={styles.name}>{props.name}</Text>
         <View style={styles.badge}>
-          <Text style={styles.badgeText}>34 songs</Text>
+          <Text style={styles.badgeText}>
+            {(props.songsCount || '0') + (props.songsCount === 1 ? ' song' : ' songs')}
+          </Text>
         </View>
       </View>
     </Card>
@@ -24,7 +26,7 @@ const ArtistCard = props => {
 const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   iconWrapper: {
     borderRadius: 25,

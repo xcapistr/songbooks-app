@@ -44,7 +44,7 @@ const BrowseScreen = props => {
             return (
               <SongCard
                 name={results[item].name}
-                artist={results[item].artist}
+                artist={results[item].artistName}
                 action={() => {
                   props.navigation.navigate('BrowseL2', {
                     type: 'song',
@@ -60,7 +60,7 @@ const BrowseScreen = props => {
               <BookCard
                 name={results[item].name}
                 image={results[item].image}
-                songsCount={results[item].songIds.length}
+                songsCount={results[item].songsCount}
                 action={() => {
                   props.navigation.navigate('BrowseL2', {
                     type: 'book',
@@ -75,6 +75,7 @@ const BrowseScreen = props => {
             return (
               <ArtistCard
                 name={results[item].name}
+                songsCount={results[item].songsCount}
                 action={() => {
                   props.navigation.navigate('BrowseL2', {
                     type: 'artist',
@@ -87,7 +88,7 @@ const BrowseScreen = props => {
             )
           }
         }}
-        keyExtractor={item => item}
+        keyExtractor={item => results[item].type + item}
       ></FlatList>
     </View>
   )
