@@ -18,7 +18,7 @@ const BookCard = props => {
       </View>
       <View style={styles.infoWrapper}>
         <Text style={styles.name}>{props.name}</Text>
-        <Text style={styles.author}>by You</Text>
+        <Text style={styles.author}>by {props.ownerName}</Text>
         <View style={styles.lastLine}>
           <View style={styles.badge}>
             <Text style={styles.badgeText}>

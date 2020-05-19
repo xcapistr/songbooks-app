@@ -54,7 +54,8 @@ const HomeScreen = props => {
           <BookCard
             name={books[item].name}
             image={books[item].image}
-            songsCount={books[item].songIds.length}
+            songsCount={books[item].songsCount}
+            ownerName={books[item].ownerName}
             action={() =>
               props.navigation.navigate('HomeL2', {
                 type: 'book',
@@ -82,7 +83,7 @@ HomeScreen.navigationOptions = navData => ({
       <Item
         title="Menu"
         iconName={Platform.OS === 'android' ? 'md-add' : 'ios-add'}
-        onPress={() => navData.navigation.navigate('modal', {type: 'new-book'})}
+        onPress={() => navData.navigation.navigate('modal', { type: 'new-book' })}
       />
     </HeaderButtons>
   )

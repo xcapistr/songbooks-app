@@ -61,6 +61,7 @@ const BrowseScreen = props => {
                 name={results[item].name}
                 image={results[item].image}
                 songsCount={results[item].songsCount}
+                ownerName={results[item].ownerName}
                 action={() => {
                   props.navigation.navigate('BrowseL2', {
                     type: 'book',

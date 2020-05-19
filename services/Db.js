@@ -31,21 +31,27 @@ export const GetSong = async id => {
   return result
 }
 
-export const GetBooks = async () => {
-  const result = {}
-  const booksRef = firestore.collection('songbooks')
-  const querySnapshot = await booksRef.get()
-  querySnapshot.forEach(item => {
-    const book = item.data()
-    result[item.id] = {
-      id: item.id,
-      name: book.name,
-      songIds: book.songs,
-      songs: {},
-      image: book.image
-    }
-  })
-  return result
+export const GetUserBooks = async userId => {
+  try {
+    const result = {}
+    const data = (await axios.get(`https://songbooks-app.herokuapp.com/users/${userId}/books`)).data
+    data.forEach(book => {
+      result[book.id] = {
+        id: book.id,
+        name: book.name,
+        image: book.image || emptyImage,
+        owner: book.owner,
+        ownerName: book.owner === userId ? 'You' : book.ownerName,
+        songsCount: book.songsCount,
+        songs: {},
+        stars: book.stars,
+        votes: book.votes
+      }
+    })
+    return result
+  } catch (error) {
+    console.log('ERROR:', error)
+  }
 }
 
 export const GetSongsByIds = async songIds => {
@@ -89,7 +95,8 @@ export const GetBookSongs = async bookId => {
 export const GetArtistSongs = async artistId => {
   try {
     const result = {}
-    const data = (await axios.get(`https://songbooks-app.herokuapp.com/artists/${artistId}/songs`)).data
+    const data = (await axios.get(`https://songbooks-app.herokuapp.com/artists/${artistId}/songs`))
+      .data
     data.forEach(song => {
       result[song.id] = {
         id: song.id,
@@ -152,7 +159,7 @@ export const Search = async q => {
         image: b.image || emptyImage,
         owner: b.owner,
         songsCount: b.songsCount,
-        ownerName: b.ownerName,
+        ownerName: b.owner === 1 ? 'You' : b.ownerName,
         private: b.private,
         stars: b.stars,
         votes: b.votes,
