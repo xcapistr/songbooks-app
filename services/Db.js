@@ -144,15 +144,27 @@ export const Search = async q => {
   }
 }
 
-export const createBook = async (name, image) => {
-  const keywords = generateKeywords(name)
-  await firestore.collection('songbooks').add({
-    name,
-    songs: [],
-    image: image || emptyImage,
-    keywords
-  })
-  console.log('Songbook successfully written!')
+export const CreateBook = async (userId, name, image) => {
+  try {
+    const requestBody = { name, image, owner: userId, private: false }
+    const book = (await axios.post('https://songbooks-app.herokuapp.com/books', requestBody)).data
+
+    const result = {
+      id: book.id,
+      name: book.name,
+      image: book.image || emptyImage,
+      owner: book.owner,
+      // TODO get real user id
+      ownerName: book.owner === 1 ? 'You' : book.ownerName,
+      songsCount: 0,
+      songs: {},
+      stars: book.stars,
+      votes: book.votes
+    }
+    return result
+  } catch (error) {
+    throw error
+  }
 }
 
 const formatText = text => {

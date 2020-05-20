@@ -13,17 +13,19 @@ import {
 import * as ImagePicker from 'expo-image-picker'
 import Constants from 'expo-constants'
 import * as Permissions from 'expo-permissions'
+import { useDispatch } from 'react-redux'
 
 import Colors from '../constants/Colors'
 import Button from '../components/Button'
-import { createBook } from '../services/Db'
-import Icon from '../components/Icon'
+import { createBook } from '../store/actions/user'
 
 const NewBook = props => {
   const [name, setName] = useState('')
   const [isNameFocused, setIsNameFocused] = useState(true)
   const [image, setImage] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
+
+  const dispatch = useDispatch()
 
   getPermissionAsync = async () => {
     if (Constants.platform.ios) {
@@ -57,7 +59,7 @@ const NewBook = props => {
   }
 
   const save = async () => {
-    await createBook(name, image)
+    await dispatch(createBook(name, image))
     props.goBack()
   }
 
@@ -90,8 +92,6 @@ const NewBook = props => {
           onBlur={() => setIsNameFocused(false)}
         />
         <Button style={styles.button} onPress={save} title="Save"></Button>
-        <Icon name="heart-outline" color={Colors.primary} size={50}/>
-        <Icon name="albums-outline" color={Colors.primary} size={50}/>
       </View>
     </TouchableWithoutFeedback>
   )

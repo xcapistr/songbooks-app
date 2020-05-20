@@ -23,12 +23,14 @@ const HomeScreen = props => {
     }
   }
 
-  useEffect(() => {
-    const willFocusScreen = props.navigation.addListener('willFocus', loadBooks)
-    return () => {
-      willFocusScreen.remove()
-    }
-  }, [loadBooks])
+  // TODO this is not necessary while there is just one user, new book is fetched to state during creating
+
+  // useEffect(() => {
+  //   const willFocusScreen = props.navigation.addListener('willFocus', loadBooks)
+  //   return () => {
+  //     willFocusScreen.remove()
+  //   }
+  // }, [loadBooks])
 
   useEffect(() => {
     setIsLoading(true)
