@@ -1,4 +1,4 @@
-import { SET_USER_BOOKS, SET_USER_BOOK_SONGS, CREATE_BOOK } from '../actions/user'
+import { SET_USER_BOOKS, SET_USER_BOOK_SONGS, CREATE_BOOK, CREATE_SONG } from '../actions/user'
 
 const initialState = {
   books: {}
@@ -21,6 +21,14 @@ export default (state = initialState, action) => {
       }
     case CREATE_BOOK:
       prevBooks[action.book.id] = action.book
+      return {
+        ...state,
+        books: prevBooks
+      }
+    case CREATE_SONG:
+      console.log('new book:', action.song);
+      
+      prevBooks[action.song.bookId].songs[action.song.id] = action.song
       return {
         ...state,
         books: prevBooks

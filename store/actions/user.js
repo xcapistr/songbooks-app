@@ -1,8 +1,9 @@
-import { GetUserBooks, GetBookSongs, CreateBook } from '../../services/Db'
+import { GetUserBooks, GetBookSongs, CreateBook, CreateSong } from '../../services/Db'
 
 export const SET_USER_BOOKS = 'SET_BOOKS'
 export const SET_USER_BOOK_SONGS = 'SET_BOOK_SONGS'
 export const CREATE_BOOK = 'CREATE_BOOK'
+export const CREATE_SONG = 'CREATE_SONG'
 
 export const fetchBooks = () => {
   return async (dispatch, getState) => {
@@ -41,10 +42,24 @@ export const fetchBookSongs = bookId => {
 export const createBook = (name, image) => {
   return async dispatch => {
     try {
-      const newBook = await CreateBook(1, name, image)
+      const newBook = await CreateBook(1, name, image, false)
       dispatch({
         type: CREATE_BOOK,
         book: newBook
+      })
+    } catch (error) {
+      throw error
+    }
+  }
+}
+
+export const createSong = (name, text, artistName, bookId) => {
+  return async dispatch => {
+    try {
+      const newSong = await CreateSong(name, text, artistName, 1, false, bookId)
+      dispatch({
+        type: CREATE_SONG,
+        song: newSong
       })
     } catch (error) {
       throw error

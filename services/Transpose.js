@@ -17,5 +17,5 @@ const transpositions = {
 
 export default (chord, trans) => {
   const shift = trans < 0 ? 12 + trans : trans
-  return transpositions[chord][shift]
+  return transpositions[chord] ? transpositions[chord][shift] : chord
 }

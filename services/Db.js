@@ -97,7 +97,7 @@ export const Search = async q => {
       artists: {},
       songs: {}
     }
-    
+
     if (!q) return result
     const data = (await axios.get(`https://songbooks-app.herokuapp.com/browse?query=${q}`)).data
     data.songs.forEach(s => {
@@ -145,22 +145,45 @@ export const Search = async q => {
   }
 }
 
-export const CreateBook = async (userId, name, image) => {
+export const CreateBook = async (userId, name, image, isPrivate) => {
   try {
-    const requestBody = { name, image, owner: userId, private: false }
+    // private is reserved word
+    const requestBody = { name, image, owner: userId, private: isPrivate }
     const book = (await axios.post('https://songbooks-app.herokuapp.com/books', requestBody)).data
-
     const result = {
       id: book.id,
       name: book.name,
       image: book.image || emptyImage,
       owner: book.owner,
       // TODO get real user id
-      ownerName: book.owner === 1 ? 'You' : book.ownerName,
+      ownerName: 'You',
       songsCount: 0,
       songs: {},
       stars: book.stars,
       votes: book.votes
+    }
+    return result
+  } catch (error) {
+    throw error
+  }
+}
+
+export const CreateSong = async ( name, text, artistName, owner, isPrivate, bookId ) => {
+  try {
+    // private is reserved word
+    const requestBody = { name, text, artistName, owner, private: isPrivate, bookId }
+    const song = (await axios.post('https://songbooks-app.herokuapp.com/songs', requestBody)).data
+    const result = {
+      id: song.id,
+      name: song.name,
+      text: song.text,
+      artist: song.artist,
+      owner: song.owner,
+      ownerName: 'You',
+      private: song.private,
+      stars: song.stars,
+      votes: song.votes,
+      bookId
     }
     return result
   } catch (error) {

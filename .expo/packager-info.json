@@ -3,8 +3,8 @@
   "expoServerPort": 19000,
   "expoServerNgrokUrl": "https://qu-8bt.xcapistr.songbooks-app.exp.direct",
   "packagerNgrokUrl": "https://packager.qu-8bt.xcapistr.songbooks-app.exp.direct",
-  "ngrokPid": 819,
+  "ngrokPid": 6952,
   "packagerPort": 19001,
-  "packagerPid": 785,
+  "packagerPid": 6941,
   "webpackServerPort": null
 }

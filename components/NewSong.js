@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef } from 'react'
 import {
   StyleSheet,
   View,
@@ -18,8 +18,7 @@ import Colors from '../constants/Colors'
 import Icon from '../components/Icon'
 import AnimatedInput from '../components/AnimatedInput'
 import { useKeyboard } from '../hooks/keyboard'
-import { createSong } from '../services/Db'
-import * as userActions from '../store/actions/user'
+import { createSong } from '../store/actions/user'
 
 const NewSong = props => {
   const [songName, setSongName] = useState('')
@@ -72,21 +71,9 @@ const NewSong = props => {
     'H7'
   ]
 
-  const loadBooks = async () => {
-    try {
-      console.log('user books loading...')
-      await dispatch(userActions.fetchBooks())
-      console.log('done')
-    } catch (error) {
-      throw error
-    }
-  }
-
   const save = async () => {
     try {
-      console.log('new song parameters:', songName, artist, text, props.bookId)
-      await createSong(songName, artist, text, props.bookId)
-      await loadBooks()
+      await dispatch(createSong(songName, text, artist, props.bookId))
       props.goBack()
     } catch (err) {
       props.setSaved(false)
@@ -137,7 +124,6 @@ const NewSong = props => {
         }}
       >
         <View style={styles.inputsWrapper}>
-          <Button onPress={save} title="save"></Button>
           <AnimatedInput
             label="Song Name"
             value={songName}
