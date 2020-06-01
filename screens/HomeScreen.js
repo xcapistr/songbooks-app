@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, View, FlatList, ActivityIndicator } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
-import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 
 import Colors from '../constants/Colors'
 import BookCard from '../components/BookCard'
 import * as userActions from '../store/actions/user'
-import HeaderIcon from '../components/HeaderIcon'
+import HeaderButton from '../components/HeaderButton'
 
 const HomeScreen = props => {
   const books = useSelector(state => state.user.books)
@@ -81,13 +80,10 @@ HomeScreen.navigationOptions = navData => ({
   },
   headerTintColor: Colors.primary,
   headerRight: (
-    <HeaderButtons HeaderButtonComponent={HeaderIcon}>
-      <Item
-        title="Menu"
-        iconName={Platform.OS === 'android' ? 'md-add' : 'ios-add'}
-        onPress={() => navData.navigation.navigate('modal', { type: 'new-book' })}
-      />
-    </HeaderButtons>
+    <HeaderButton
+      iconName="add-outline"
+      onPress={() => navData.navigation.navigate('modal', { type: 'new-book' })}
+    ></HeaderButton>
   )
 })
 

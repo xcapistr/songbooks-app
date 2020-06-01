@@ -5,8 +5,7 @@ import SongDetail from '../components/SongDetail'
 import BookDetail from '../components/BookDetail'
 import ArtistDetail from '../components/ArtistDetail'
 import Colors from '../constants/Colors'
-import { HeaderButtons, Item } from 'react-navigation-header-buttons'
-import HeaderIcon from '../components/HeaderIcon'
+import HeaderButton from '../components/HeaderButton'
 
 const BrowseL2Screen = props => {
   const type = props.navigation.getParam('type')
@@ -31,18 +30,15 @@ BrowseL2Screen.navigationOptions = navData => {
     headerTintColor: Colors.primary,
     headerRight:
       navData.navigation.getParam('root') === 'Home' ? (
-        <HeaderButtons HeaderButtonComponent={HeaderIcon}>
-          <Item
-            title="Menu"
-            iconName={Platform.OS === 'android' ? 'md-add' : 'ios-add'}
-            onPress={() =>
-              navData.navigation.navigate('modal', {
-                type: 'new-song',
-                id: navData.navigation.getParam('id')
-              })
-            }
-          />
-        </HeaderButtons>
+        <HeaderButton
+          iconName="add-outline"
+          onPress={() =>
+            navData.navigation.navigate('modal', {
+              type: 'new-song',
+              id: navData.navigation.getParam('id')
+            })
+          }
+        ></HeaderButton>
       ) : null
   }
 }
