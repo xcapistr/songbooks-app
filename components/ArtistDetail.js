@@ -72,7 +72,8 @@ const ArtistDetail = props => {
                 songId: songs[item].id,
                 artistId: props.navigation.getParam('id'),
                 name: songs[item].name,
-                root: props.navigation.getParam('root')
+                root: props.navigation.getParam('root'),
+                imported: songs[item].imported
               })
             }}
           >

@@ -103,6 +103,7 @@ const SongDetail = props => {
   return (
     <View style={styles.screen}>
       <Modal
+        style={{ padding: 15 }}
         title={chord}
         isVisible={openedModal === 'chord'}
         buttons={[
@@ -117,6 +118,7 @@ const SongDetail = props => {
         <ChordDetail chord={chord}></ChordDetail>
       </Modal>
       <Modal
+        style={{ padding: 15 }}
         title="Text size"
         isVisible={openedModal === 'text-size'}
         buttons={[
@@ -154,6 +156,7 @@ const SongDetail = props => {
         ></Slider>
       </Modal>
       <Modal
+        style={{ padding: 15 }}
         title="Scroll speed"
         isVisible={openedModal === 'scroll-speed'}
         buttons={[

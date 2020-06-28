@@ -1,10 +1,10 @@
 {
-  "devToolsPort": 19002,
+  "devToolsPort": 19003,
   "expoServerPort": 19000,
   "expoServerNgrokUrl": "https://qu-8bt.xcapistr.songbooks-app.exp.direct",
   "packagerNgrokUrl": "https://packager.qu-8bt.xcapistr.songbooks-app.exp.direct",
-  "ngrokPid": 7337,
-  "packagerPort": 19003,
-  "packagerPid": 7316,
+  "ngrokPid": 18578,
+  "packagerPort": 19001,
+  "packagerPid": 18565,
   "webpackServerPort": null
 }

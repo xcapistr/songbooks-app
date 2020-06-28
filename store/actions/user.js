@@ -27,7 +27,7 @@ export const fetchBooks = () => {
 export const fetchBookSongs = bookId => {
   return async dispatch => {
     try {
-      const songsData = await GetBookSongs(bookId)
+      const songsData = await GetBookSongs(bookId, 1)
       dispatch({
         type: SET_USER_BOOK_SONGS,
         bookId,

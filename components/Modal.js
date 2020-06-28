@@ -12,7 +12,7 @@ const Modal = props => {
         <View style={styles.head}>
           <Text style={styles.title}>{props.title}</Text>
         </View>
-        <View style={styles.body}>{props.children}</View>
+        <View style={props.style}>{props.children}</View>
         <View style={styles.buttons}>
           {props.buttons.map((button, i) => (
             <Button
@@ -43,9 +43,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 20,
     color: '#333'
-  },
-  body: {
-    padding: 15
   },
   buttons: {
     borderTopWidth: 1,

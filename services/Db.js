@@ -40,10 +40,10 @@ export const GetUserBooks = async userId => {
   }
 }
 
-export const GetBookSongs = async bookId => {
+export const GetBookSongs = async (bookId, userId) => {
   try {
     const result = {}
-    const data = (await axios.get(`https://songbooks-app.herokuapp.com/books/${bookId}/songs`)).data
+    const data = (await axios.get(`https://songbooks-app.herokuapp.com/books/${bookId}/songs?user_id=${userId}`)).data
     data.forEach(song => {
       result[song.id] = {
         id: song.id,
@@ -55,7 +55,8 @@ export const GetBookSongs = async bookId => {
         ownerName: song.ownerName,
         private: song.private,
         stars: song.stars,
-        votes: song.votes
+        votes: song.votes,
+        imported: song.imported
       }
     })
     return result
@@ -64,10 +65,10 @@ export const GetBookSongs = async bookId => {
   }
 }
 
-export const GetArtistSongs = async artistId => {
+export const GetArtistSongs = async (artistId, userId) => {
   try {
     const result = {}
-    const data = (await axios.get(`https://songbooks-app.herokuapp.com/artists/${artistId}/songs`))
+    const data = (await axios.get(`https://songbooks-app.herokuapp.com/artists/${artistId}/songs?user_id=${userId}`))
       .data
     data.forEach(song => {
       result[song.id] = {
@@ -80,7 +81,8 @@ export const GetArtistSongs = async artistId => {
         ownerName: song.ownerName,
         private: song.private,
         stars: song.stars,
-        votes: song.votes
+        votes: song.votes,
+        imported: song.imported
       }
     })
     console.log('ARTIST_SONGS:', result)
@@ -90,7 +92,7 @@ export const GetArtistSongs = async artistId => {
   }
 }
 
-export const Search = async q => {
+export const Search = async (q, userId) => {
   try {
     const result = {
       books: {},
@@ -99,7 +101,7 @@ export const Search = async q => {
     }
 
     if (!q) return result
-    const data = (await axios.get(`https://songbooks-app.herokuapp.com/browse?query=${q}`)).data
+    const data = (await axios.get(`https://songbooks-app.herokuapp.com/browse?query=${q}&user_id=${userId}`)).data
     data.songs.forEach(s => {
       result.songs[s.id] = {
         id: s.id,
@@ -112,7 +114,8 @@ export const Search = async q => {
         ownerName: s.ownerName,
         private: s.private,
         stars: s.stars,
-        votes: s.votes
+        votes: s.votes,
+        imported: s.imported
       }
     })
     data.artists.forEach(a => {
@@ -136,6 +139,7 @@ export const Search = async q => {
         private: b.private,
         stars: b.stars,
         votes: b.votes,
+        imported: b.imported,
         songs: {}
       }
     })
@@ -186,6 +190,14 @@ export const CreateSong = async ( name, text, artistName, owner, isPrivate, book
       bookId
     }
     return result
+  } catch (error) {
+    throw error
+  }
+}
+
+export const GetUserSongBooks = async ( userId, songId) => {
+  try {
+    return (await axios.get(`https://songbooks-app.herokuapp.com/users/${userId}/songs/${songId}/books`)).data
   } catch (error) {
     throw error
   }

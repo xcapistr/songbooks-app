@@ -3,6 +3,7 @@ import { StyleSheet, Text, Image, View, Platform } from 'react-native'
 
 import Card from './Card'
 import Colors from '../constants/Colors'
+import Icon from './Icon'
 
 const BookCard = props => {
   return (
@@ -26,6 +27,7 @@ const BookCard = props => {
             </Text>
           </View>
           <Text style={styles.stars}> 4.8 ★</Text>
+          {props.imported && <Icon name="import" size={15} color={Colors.lighter} />}
         </View>
       </View>
     </Card>
@@ -65,12 +67,12 @@ const styles = StyleSheet.create({
   lastLine: {
     marginTop: 3,
     flexDirection: 'row',
-    justifyContent: 'flex-start',
     alignItems: 'center'
   },
   stars: {
     color: '#333',
-    fontSize: 10
+    fontSize: 10,
+    flex: 1
   },
   badge: {
     backgroundColor: Colors.lightest,

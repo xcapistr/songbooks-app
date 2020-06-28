@@ -45,12 +45,14 @@ const BrowseScreen = props => {
               <SongCard
                 name={results[item].name}
                 artist={results[item].artistName}
+                imported={results[item].imported}
                 action={() => {
                   props.navigation.navigate('BrowseL2', {
                     type: 'song',
                     songId: item,
                     name: results[item].name,
-                    root: 'Browse'
+                    root: 'Browse',
+                    imported: results[item].imported
                   })
                 }}
               />
@@ -62,12 +64,14 @@ const BrowseScreen = props => {
                 image={results[item].image}
                 songsCount={results[item].songsCount}
                 ownerName={results[item].ownerName}
+                imported={results[item].imported}
                 action={() => {
                   props.navigation.navigate('BrowseL2', {
                     type: 'book',
                     id: item,
                     name: results[item].name,
-                    root: 'Browse'
+                    root: 'Browse',
+                    imported: results[item].imported
                   })
                 }}
               />

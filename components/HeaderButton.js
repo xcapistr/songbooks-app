@@ -6,7 +6,7 @@ import Icon from './Icon'
 
 const HeaderIcon = props =>
   Platform.OS === 'ios' ? (
-    <TouchableOpacity style={{marginRight: 5}} onPress={props.onPress}>
+    <TouchableOpacity style={{marginRight: 10}} onPress={props.onPress}>
       <Icon name={props.iconName} size={23} color={Colors.primary} />
     </TouchableOpacity>
   ) : (

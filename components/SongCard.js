@@ -4,8 +4,10 @@ import { Ionicons } from '@expo/vector-icons'
 
 import Card from './Card'
 import Colors from '../constants/Colors'
+import Icon from './Icon'
 
 const SongCard = props => {
+  console.log('ofhdfhsdjfds', props.imported)
   return (
     <Card style={styles.card} action={props.action}>
       <View style={styles.iconWrapper}>
@@ -15,7 +17,10 @@ const SongCard = props => {
         <View>
           <Text style={styles.name}>{props.name}</Text>
           <Text style={styles.artist}>by {props.artist}</Text>
-          <Text style={styles.lastLine}>4.8 ★</Text>
+          <View style={styles.lastLine}>
+            <Text style={styles.stars}>4.8 ★</Text>
+            {props.imported && <Icon name="import" size={15} color={Colors.lighter} />}
+          </View>
         </View>
       </View>
     </Card>
@@ -53,6 +58,10 @@ const styles = StyleSheet.create({
   },
   lastLine: {
     marginTop: 3,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  stars: {
     color: '#333',
     fontSize: 10
   }

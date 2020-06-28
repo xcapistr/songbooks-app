@@ -7,7 +7,7 @@ export const SET_BROWSE_ARTIST_SONGS = 'SET_BROWSE_ARTIST_SONGS'
 export const fetchResults = query => {
   return async dispatch => {
     try {
-      const resultsData = await Search(query)
+      const resultsData = await Search(query, 1)
       dispatch({
         type: SET_BROWSE_RESULTS,
         results: resultsData
@@ -21,7 +21,7 @@ export const fetchResults = query => {
 export const fetchBookSongs = bookId => {
   return async dispatch => {
     try {
-      const songsData = await GetBookSongs(bookId)
+      const songsData = await GetBookSongs(bookId, 1)
       dispatch({
         type: SET_BROWSE_BOOK_SONGS,
         bookId,
@@ -36,7 +36,7 @@ export const fetchBookSongs = bookId => {
 export const fetchArtistSongs = artistId => {
   return async dispatch => {
     try {
-      const songsData = await GetArtistSongs(artistId)
+      const songsData = await GetArtistSongs(artistId, 1)
       dispatch({
         type: SET_BROWSE_ARTIST_SONGS,
         artistId,
